@@ -3,16 +3,31 @@
   <ItemGroup>
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\EmpManager\CommandParser.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandParserTest_Fixture.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="..\EmpManager\SampleClass.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\EmpManager\CommandParser.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandParserTest_Fixture.h">
+      <Filter>TestCode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
       <UniqueIdentifier>{7c3c644e-52c2-414a-a667-42f5535ae955}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestCode">
+      <UniqueIdentifier>{0319ed14-40bf-45e8-9e84-ac9365a1ff6b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
