@@ -17,8 +17,6 @@ private:
 	int last;
 public:
 	string getPhoneNumber() {
-		string result = "010-";
-		result += to_string(middle);
 		return "010-" + to_string(middle) + to_string(last);
 	}
 	void setMiddle(int number) {
