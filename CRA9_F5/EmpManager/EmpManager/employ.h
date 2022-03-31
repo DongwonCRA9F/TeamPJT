@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-enum CL {
+enum class enumCL {
 	CL1 = 1,
 	CL2 = 2,
 	CL3 = 3,
@@ -56,18 +56,18 @@ public:
 	}
 };
 
-enum Certi {
+enum class enumCerti {
 	ADV = 0,
-	PRO = 1,
-	EX = 2,
+	PRO,
+	EX,
 	Certi_MAX
 };
 
 class Employ {
 	int employeeNum;
 	string name;
-	CL cl;
+	enumCL cl;
 	PhoneNumber phoneNum;
 	Birthday birthday;
-	Certi certi;
+	enumCerti certi;
 };
