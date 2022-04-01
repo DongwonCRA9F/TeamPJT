@@ -18,7 +18,6 @@ protected:
 	void SetUp() override;
 	void TearDown() override;
 
-	void MakeSampleInputList();
-
 	vector<InputList> SampleInputList;
+	void MakeSampleInputList();
 };
