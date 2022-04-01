@@ -11,9 +11,14 @@ using namespace std;
 class EmployManager {
 
 private:
+	enumCommandList cmd;
+	vector<string> conditions;
+	vector<enumOptionList> options;
 	CommandParser cmdParser;
 	CommandProcessor* cmdProcessor;
 
 public:
-	vector<Employ> runCommand(string input);
+	vector<string> runCommand(string input);
+	vector<string> empListTostrList(vector<Employ> empList);
 };
+
