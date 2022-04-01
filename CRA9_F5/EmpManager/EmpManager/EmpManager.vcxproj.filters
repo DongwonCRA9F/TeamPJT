@@ -18,6 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="DatabaseInterface.cpp">
     <ClCompile Include="CommandParser.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -26,6 +27,7 @@
     <ClInclude Include="SampleClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="DatabaseInterface.h">
     <ClInclude Include="CommandParser.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
