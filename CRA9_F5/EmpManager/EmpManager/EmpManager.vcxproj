@@ -148,6 +148,7 @@
     <ClInclude Include="CommandResult.h" />
     <ClInclude Include="DatabaseInterface.h" />
     <ClInclude Include="CommandParser.h" />
+    <ClInclude Include="Employ.h" />
     <ClInclude Include="SampleClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
