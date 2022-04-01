@@ -3,10 +3,16 @@
   <ItemGroup>
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="CommandProcessorTest_Fixture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="..\EmpManager\SampleClass.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandProcessorTest_Fixture.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
@@ -14,5 +20,8 @@
     <Filter Include="Source">
       <UniqueIdentifier>{7c3c644e-52c2-414a-a667-42f5535ae955}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
