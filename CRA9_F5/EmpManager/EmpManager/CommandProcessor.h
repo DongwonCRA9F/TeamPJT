@@ -4,9 +4,6 @@
 
 using namespace std;
 class TempDataBase {};
-class TempCommand {
-	
-};
 
 class CommandProcessor {
 public:
