@@ -12,6 +12,9 @@
     <ClCompile Include="CommandParserTest_Fixture.cpp">
       <Filter>TestCode</Filter>
     </ClCompile>
+    <ClCompile Include="EmployTest.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

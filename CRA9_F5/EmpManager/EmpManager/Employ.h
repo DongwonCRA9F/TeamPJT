@@ -12,48 +12,102 @@ enum class enumCL {
 };
 
 class PhoneNumber {
-private:
-	int middle;
-	int last;
 public:
+	PhoneNumber() {}
+	PhoneNumber(string phoneNumber)	{
+		setPhoneNumber(phoneNumber);
+	}
+
+	void setPhoneNumber(string phoneNumber) {
+		string tempPhoneNumber = phoneNumber + delim;
+		size_t pos = 0, i = 0;
+		while ((pos = tempPhoneNumber.find(delim)) != string::npos)	{
+			this->phoneNumber[i++] = tempPhoneNumber.substr(0, pos);
+			tempPhoneNumber.erase(0, pos + delim.length());
+		}
+	}
+
 	string getPhoneNumber() {
-		return "010-" + to_string(middle) + to_string(last);
+		return this->phoneNumber[FIRST] + delim + this->phoneNumber[MIDDLE] + delim + this->phoneNumber[LAST];
 	}
-	void setMiddle(int number) {
-		middle = number;
-	}
-	void setLast(int number) {
-		last = number;
-	}
-	int getMiddle() {
-		return middle;
-	}
-	int getLast() {
-		return last;
-	}
+
+	string getMiddle() { return phoneNumber[MIDDLE]; }
+	string getLast() {	return phoneNumber[LAST]; }
+
+private:
+	enum {
+		FIRST,
+		MIDDLE,
+		LAST
+	};
+	string phoneNumber[3];
+
+	const string delim = "-";
 };
 
 class Birthday {
-private:
-	int year;
-	int month;
-	int day;
 public:
-	void setYear(int num) {
-		year = num;
-	}
-	void setMonth(int num) {
-		month = num;
-	}
-	void setDay(int num) {
-		day = num;
-	}
-	void setYYYYMMDD(string YYYYMMDD) {
-		//TODO: implement this.
+	Birthday() {
 		year = 0;
 		month = 0;
 		day = 0;
 	}
+	Birthday(string YYYYMMDD) {
+		setYYYYMMDD(YYYYMMDD);
+	}
+	int getYear() { return year; }
+	int getMonth() { return month; }
+	int getDay() { return day; }
+	string getBirthday(){ return "" + to_string(year) + to_string(month) + to_string(day); }
+
+	void setYYYYMMDD(string YYYYMMDD) {
+		year = stoi(YYYYMMDD.substr(yearOffset, yearCount));
+		month = stoi(YYYYMMDD.substr(monthOffset, monthCount));
+		day = stoi(YYYYMMDD.substr(dayOffset, dayCount));
+	}
+
+private:
+	int year;
+	const int yearOffset = 0;
+	const int yearCount = 4;
+
+	int month;
+	const int monthOffset = yearOffset + yearCount;
+	const int monthCount = 2;
+
+	int day;
+	const int dayOffset = monthOffset + monthCount;
+	const int dayCount = 2;
+
+};
+
+class Name {
+public:
+	Name() {}
+	Name(string fullName) {
+		setName(fullName);
+	}
+	
+	void setName(string fullName) {
+		string tempfullName = fullName + delim;
+		size_t pos = 0, i = 0;
+		while ((pos = tempfullName.find(delim)) != string::npos) {
+			this->name[i++] = tempfullName.substr(0, pos);
+			tempfullName.erase(0, pos + delim.length());
+		}
+	}
+	string getFullName() { return name[FIRST] + delim + name[LAST]; }
+	string getFirstName() { return name[FIRST]; }
+	string getLastName() { return name[LAST]; }
+
+
+private:
+	enum {
+		FIRST,
+		LAST
+	};
+	string name[2];
+	const string delim = " ";
 };
 
 enum class enumCerti {
@@ -63,19 +117,23 @@ enum class enumCerti {
 	Certi_MAX
 };
 
-enum class enumEmploy {
-	EMPLOYEENUM = 0,
-	NAME,
-	CL,
-	PHONENUM,
-	BIRTHDAY,
-	CERTI,
-	ENUMEMPLOY_MAX
-};
-
 class Employ {
+public:
+	Employ() {}
+	Employ(int employeeNum, Name name, enumCL cl, PhoneNumber phoneNum, Birthday birthday, enumCerti certi)
+	: employeeNum(employeeNum), name(name), cl(cl), phoneNum(phoneNum), birthday(birthday), certi(certi){
+
+	}
+	int getEmployeeNum() { return employeeNum; }
+	Name getName() { return name; }
+	enumCL getCl() { return cl; }
+	PhoneNumber getPhoneNum() { return phoneNum; }
+	Birthday getBirthday() { return birthday; }
+	enumCerti getCerti() { return certi; }
+
+private:
 	int employeeNum;
-	string name;
+	Name name;
 	enumCL cl;
 	PhoneNumber phoneNum;
 	Birthday birthday;
