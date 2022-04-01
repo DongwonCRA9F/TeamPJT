@@ -2,15 +2,17 @@
 
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 using namespace std;
 
 
 enum class enumCommandList{
+	NONE = -1,
 	ADD = 0,
 	DEL,
 	SCH,
-	MOD
+	MOD,
 };
 
 enum class enumOptionList {
@@ -52,8 +54,12 @@ private:
 	vector<enumOptionList> CommandOption;
 	vector<string> Conditions;
 
+	void InitData();
+
 public:
-	bool parsing(string InputArg, string delimiter);
+	CommandParser() : Command(enumCommandList::NONE) {
+	}
+	bool parsing(string InputArg, const string delimiter);
 	enumCommandList getCommand();
 	vector<enumOptionList> getOptions();
 	vector<string> getConditions();
