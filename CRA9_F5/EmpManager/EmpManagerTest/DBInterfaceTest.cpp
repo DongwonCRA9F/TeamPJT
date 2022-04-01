@@ -43,26 +43,15 @@ namespace
 		EXPECT_EQ(db.getCurRecordsCount(), 5);
 	}
 
-	TEST_F(DBInterfaceTest, InsertTestPositive_CheckRecordsMax)
+	TEST_F(DBInterfaceTest, InsertTestPositive_CheckManyRecords)
 	{
-		for (int i = 0; i < 100000; i++)
+		int recordsCount = 200000;
+		for (int i = 0; i < recordsCount; i++)
 		{
 			Employ em = Employ(20000000 + i, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
 			EXPECT_TRUE(db.insertItem(em));
 		}
 
-		EXPECT_EQ(db.getCurRecordsCount(), 100000);
-	}
-
-	TEST_F(DBInterfaceTest, InsertTestNegative_CheckRecordsMax)
-	{
-		for (int i = 0; i < 100000; i++)
-		{
-			Employ em = Employ(20000000 + i, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
-			EXPECT_TRUE(db.insertItem(em));
-		}
-
-		Employ emMax = Employ(21000000, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
-		EXPECT_FALSE(db.insertItem(emMax));
+		EXPECT_EQ(db.getCurRecordsCount(), recordsCount);
 	}
 }

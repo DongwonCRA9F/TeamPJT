@@ -4,7 +4,6 @@
 using namespace std;
 bool DatabaseInterface::insertItem(Employ employee)
 {
-	if (this->employDB.size() >= this->MAX_RECORDS_COUNT) return false;
 	employDB.push_back(employee);
 	
 	return true;

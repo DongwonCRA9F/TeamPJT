@@ -21,6 +21,5 @@ public:
 
 	size_t getCurRecordsCount() { return this->employDB.size(); }
 private:
-	const int MAX_RECORDS_COUNT = 100000;
 	vector<Employ> employDB;
 };
