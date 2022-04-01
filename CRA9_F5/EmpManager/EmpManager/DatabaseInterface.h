@@ -2,19 +2,11 @@
 
 #include <string>
 #include <vector>
+#include "Employ.h"
+#include "CommandParser.h"
 using namespace std;
 
-struct TempEmployee
-{
-	string employeeNum;
-	string name;
-	string ci;
-	string phoneNumber;
-	string birthDay;
-	string certi;
-};
-struct DatabaseSearchItem
-{
+struct DatabaseSearchItem {
 	string column;
 	string value;
 };
@@ -22,10 +14,13 @@ struct DatabaseSearchItem
 class DatabaseInterface
 {
 public:
-	bool insertItem(TempEmployee employee);
-	vector<TempEmployee> selectItems(char option, DatabaseSearchItem item);
-	vector<TempEmployee> updateItems(char option, DatabaseSearchItem origin, DatabaseSearchItem update);
-	vector<TempEmployee> deleteItems(char option, DatabaseSearchItem item);
+	bool insertItem(Employ employee);
+	vector<Employ> selectItems(enumOptionList option, DatabaseSearchItem item);
+	vector<Employ> updateItems(enumOptionList option, DatabaseSearchItem origin, DatabaseSearchItem update);
+	vector<Employ> deleteItems(enumOptionList option, DatabaseSearchItem item);
+
+	size_t getCurRecordsCount() { return this->employDB.size(); }
 private:
-	int maxItems;
+	const int MAX_RECORDS_COUNT = 100000;
+	vector<Employ> employDB;
 };
