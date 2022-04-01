@@ -63,6 +63,16 @@ enum class enumCerti {
 	Certi_MAX
 };
 
+enum class enumEmploy {
+	EMPLOYEENUM = 0,
+	NAME,
+	CL,
+	PHONENUM,
+	BIRTHDAY,
+	CERTI,
+	ENUMEMPLOY_MAX
+};
+
 class Employ {
 	int employeeNum;
 	string name;
