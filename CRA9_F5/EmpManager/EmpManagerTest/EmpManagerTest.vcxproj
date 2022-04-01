@@ -33,7 +33,9 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClInclude Include="..\EmpManager\CommandParser.h" />
+    <ClInclude Include="..\EmpManager\CommandParser.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\EmpManager\SampleClass.h" />
     <ClInclude Include="CommandProcessorTest_Fixture.h" />
     <ClInclude Include="CommandParserTest_Fixture.h" />
