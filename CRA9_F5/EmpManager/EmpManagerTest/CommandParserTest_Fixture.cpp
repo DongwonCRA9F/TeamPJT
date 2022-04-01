@@ -41,13 +41,12 @@ void CommandParserFixture::MakeSampleInputList() {
 }
 
 
-
 TEST_F(CommandParserFixture, ParsingPositiveTest) {
 	CommandParser cmdParser;
 	MakeSampleInputList();
 	
 	for (auto& SampleInput : SampleInputList) {
-		cmdParser.parsing(SampleInput.InputString);
+		cmdParser.parsing(SampleInput.InputString, ",");
 		EXPECT_EQ(cmdParser.getCommand(), SampleInput.ResultCommand) << SampleInput.InputString << "에서 Command값이 제대로 뽑히지 않았습니다.";
 
 		auto Options = cmdParser.getOptions();

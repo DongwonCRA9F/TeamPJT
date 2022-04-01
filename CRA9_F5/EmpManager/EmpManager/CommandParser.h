@@ -37,7 +37,7 @@ private:
 	vector<string> Conditions;
 
 public:
-	bool parsing(string InputArg);
+	bool parsing(string InputArg, string delimiter);
 	enumCommandList getCommand();
 	vector<enumOptionList> getOptions();
 	vector<string> getConditions();
