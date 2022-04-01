@@ -35,12 +35,14 @@
   <ItemGroup>
     <ClInclude Include="..\EmpManager\CommandParser.h" />
     <ClInclude Include="..\EmpManager\SampleClass.h" />
+    <ClInclude Include="CommandProcessorTest_Fixture.h" />
     <ClInclude Include="CommandParserTest_Fixture.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\EmpManager\CommandParser.cpp" />
     <ClCompile Include="CommandParserTest_Fixture.cpp" />
+    <ClCompile Include="CommandProcessorTest_Fixture.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
