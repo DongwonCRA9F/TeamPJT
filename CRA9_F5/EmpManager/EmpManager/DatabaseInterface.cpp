@@ -2,25 +2,27 @@
 
 #include <vector>
 using namespace std;
-bool DatabaseInterface::insertItem(TempEmployee employee)
+bool DatabaseInterface::insertItem(Employ employee)
 {
+	employDB.push_back(employee);
+	
 	return true;
 }
 
-vector<TempEmployee> DatabaseInterface::selectItems(char option, DatabaseSearchItem item)
+vector<Employ> DatabaseInterface::selectItems(enumOptionList option, DatabaseSearchItem item)
 {
-	vector<TempEmployee> employeeList;
+	vector<Employ> employeeList;
 	return employeeList;
 }
 
-vector<TempEmployee> DatabaseInterface::updateItems(char option, DatabaseSearchItem origin, DatabaseSearchItem update)
+vector<Employ> DatabaseInterface::updateItems(enumOptionList option, DatabaseSearchItem origin, DatabaseSearchItem update)
 {
-	vector<TempEmployee> employeeList;
+	vector<Employ> employeeList;
 	return employeeList;
 }
 
-vector<TempEmployee> DatabaseInterface::deleteItems(char option, DatabaseSearchItem item)
+vector<Employ> DatabaseInterface::deleteItems(enumOptionList option, DatabaseSearchItem item)
 {
-	vector<TempEmployee> employeeList;
+	vector<Employ> employeeList;
 	return employeeList;
 }
