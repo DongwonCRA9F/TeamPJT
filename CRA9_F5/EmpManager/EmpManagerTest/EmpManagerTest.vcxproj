@@ -44,6 +44,7 @@
   <ItemGroup>
     <ClCompile Include="..\EmpManager\CommandParser.cpp" />
     <ClCompile Include="CommandParserTest_Fixture.cpp" />
+    <ClCompile Include="DBInterfaceTest.cpp" />
     <ClCompile Include="EmployTest.cpp" />
     <ClCompile Include="CommandProcessorTest_Fixture.cpp" />
     <ClCompile Include="test.cpp" />

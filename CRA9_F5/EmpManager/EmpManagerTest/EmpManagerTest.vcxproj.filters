@@ -15,6 +15,9 @@
     <ClCompile Include="EmployTest.cpp">
       <Filter>TestCode</Filter>
     </ClCompile>
+    <ClCompile Include="DBInterfaceTest.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
