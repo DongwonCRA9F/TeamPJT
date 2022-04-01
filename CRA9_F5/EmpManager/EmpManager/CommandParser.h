@@ -2,15 +2,17 @@
 
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 using namespace std;
 
 
 enum class enumCommandList{
+	NONE = -1,
 	ADD = 0,
 	DEL,
 	SCH,
-	MOD
+	MOD,
 };
 
 enum class enumOptionList {
@@ -29,6 +31,22 @@ enum class enumOptionList {
 	FindByDay_Birthday,
 };
 
+class invalid_Command : public exception {
+public:
+	const char* what() const noexcept override
+	{
+		return "첫번째 Command 인자가 제대로 들어오지 않았습니다.";
+	}
+};
+
+class invalid_Options : public exception {
+public:
+	const char* what() const noexcept override
+	{
+		return "사용하지 않는 옵션이 들어왔습니다.";
+	}
+};
+
 
 class CommandParser {
 private:
@@ -36,8 +54,12 @@ private:
 	vector<enumOptionList> CommandOption;
 	vector<string> Conditions;
 
+	void InitData();
+
 public:
-	bool parsing(string InputArg);
+	CommandParser() : Command(enumCommandList::NONE) {
+	}
+	bool parsing(string InputArg, const string delimiter);
 	enumCommandList getCommand();
 	vector<enumOptionList> getOptions();
 	vector<string> getConditions();
