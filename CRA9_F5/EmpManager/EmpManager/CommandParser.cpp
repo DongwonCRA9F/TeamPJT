@@ -2,7 +2,7 @@
 
 #include "CommandParser.h"
 
-bool CommandParser::parsing(string InputArg)
+bool CommandParser::parsing(string InputArg, string delimiter)
 {
 	return true;
 }

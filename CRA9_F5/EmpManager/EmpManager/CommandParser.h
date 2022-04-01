@@ -29,6 +29,22 @@ enum class enumOptionList {
 	FindByDay_Birthday,
 };
 
+class invalid_Command : public exception {
+public:
+	const char* what() const noexcept override
+	{
+		return "첫번째 Command 인자가 제대로 들어오지 않았습니다.";
+	}
+};
+
+class invalid_Options : public exception {
+public:
+	const char* what() const noexcept override
+	{
+		return "사용하지 않는 옵션이 들어왔습니다.";
+	}
+};
+
 
 class CommandParser {
 private:
@@ -37,7 +53,7 @@ private:
 	vector<string> Conditions;
 
 public:
-	bool parsing(string InputArg);
+	bool parsing(string InputArg, string delimiter);
 	enumCommandList getCommand();
 	vector<enumOptionList> getOptions();
 	vector<string> getConditions();

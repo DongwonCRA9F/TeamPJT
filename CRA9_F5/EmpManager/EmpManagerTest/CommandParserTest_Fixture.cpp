@@ -41,13 +41,12 @@ void CommandParserFixture::MakeSampleInputList() {
 }
 
 
-
 TEST_F(CommandParserFixture, ParsingPositiveTest) {
 	CommandParser cmdParser;
 	MakeSampleInputList();
 	
 	for (auto& SampleInput : SampleInputList) {
-		cmdParser.parsing(SampleInput.InputString);
+		cmdParser.parsing(SampleInput.InputString, ",");
 		EXPECT_EQ(cmdParser.getCommand(), SampleInput.ResultCommand) << SampleInput.InputString << "에서 Command값이 제대로 뽑히지 않았습니다.";
 
 		auto Options = cmdParser.getOptions();
@@ -58,4 +57,15 @@ TEST_F(CommandParserFixture, ParsingPositiveTest) {
 		EXPECT_TRUE(Conditions.size() == SampleInput.ResultCondition.size() &&
 			equal(Conditions.begin(), Conditions.end(), SampleInput.ResultCondition.begin())) << SampleInput.InputString << "에서 Condition값이 제대로 뽑히지 않았습니다.";
 	}
+}
+
+TEST_F(CommandParserFixture, ParsingNegativeTest) {
+	CommandParser cmdParser;
+
+	EXPECT_THROW(cmdParser.parsing("InvalidCmd, , , ,1,2,3", ","), invalid_Command) << "Cmd 가 제대로 들어오지 않았지만 통과하였습니다";
+	EXPECT_THROW(cmdParser.parsing("DEL,invliadOpt,-f, ,name,KYUMOK", ","), invalid_Options) << "Option이 제대로 들어오지 않았지만 통과하였습니다.";
+	EXPECT_THROW(cmdParser.parsing("MOD, ,invliadOpt, ,cl,CL3,phoneNum,010-9777-5455", ","), invalid_Options) << "Option이 제대로 들어오지 않았지만 통과하였습니다.";
+	EXPECT_THROW(cmdParser.parsing("SCH, , ,hs,birthday,19900906", ","), invalid_Options) << "Option이 제대로 들어오지 않았지만 통과하였습니다.";
+
+	EXPECT_THROW(cmdParser.parsing("ADD,-p,-f, ,18050301,KYUMOK KIM,CL2,010-9777-6055,19980906,PRO", ","), invalid_Options) << "ADD cmd에는 option이 있을 수 없습니다.";	
 }
