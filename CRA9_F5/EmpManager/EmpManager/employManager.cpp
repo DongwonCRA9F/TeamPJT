@@ -10,7 +10,7 @@ vector<string> EmployManager::runCommand(string input) {
 	return ret;
 }
 
-vector<string> EmployManager::empListTostrList(vector<Employ> empList) {
+vector<string> EmployManager::cmdResultTostrList(string cmd, CommandResult cmdResult) {
 	vector<string> ret;
 
 	// TODO

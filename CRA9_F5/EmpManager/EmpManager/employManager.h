@@ -5,6 +5,7 @@
 #include "CommandParser.h"
 #include "CommandProcessor.h"
 #include "Employ.h"
+#include "CommandResult.h"
 
 using namespace std;
 
@@ -16,9 +17,10 @@ private:
 	vector<enumOptionList> options;
 	CommandParser cmdParser;
 	CommandProcessor* cmdProcessor;
+	CommandResult cmdResult;
 
 public:
 	vector<string> runCommand(string input);
-	vector<string> empListTostrList(vector<Employ> empList);
+	vector<string> cmdResultTostrList(string cmd, CommandResult cmdResult);
 };
 
