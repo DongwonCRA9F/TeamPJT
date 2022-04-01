@@ -19,6 +19,8 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="DatabaseInterface.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="CommandParser.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -28,6 +30,8 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="DatabaseInterface.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="CommandParser.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
