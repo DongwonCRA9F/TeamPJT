@@ -28,6 +28,12 @@ TEST_F(EmployManagerFixture, cmdResultTostrListTest)
 
 	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList("SCH", sampleCmdResult));
 	EXPECT_EQ(emptyList, empManager.cmdResultTostrList("ADD", sampleCmdResult));
+
+	sampleCmdResult.list.pop_back();
+	sampleCmdResult.count = 0;
+	sampleOutList.pop_back();
+	sampleOutList.push_back("SCH,NONE");
+	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList("SCH", sampleCmdResult));
 }
 
 TEST_F(EmployManagerFixture, runAddTest)
