@@ -34,6 +34,15 @@ public:
 	string getMiddle() { return phoneNumber[MIDDLE]; }
 	string getLast() {	return phoneNumber[LAST]; }
 
+	bool operator==(PhoneNumber p) const {
+		if (phoneNumber[MIDDLE] != p.phoneNumber[MIDDLE]) return false;
+		if (phoneNumber[LAST] != p.phoneNumber[LAST]) return false;
+		return true;
+	}
+	bool operator!=(PhoneNumber p) const {
+		return !(*this == p);
+	}
+
 private:
 	enum {
 		FIRST,
@@ -64,6 +73,16 @@ public:
 		year = stoi(YYYYMMDD.substr(yearOffset, yearCount));
 		month = stoi(YYYYMMDD.substr(monthOffset, monthCount));
 		day = stoi(YYYYMMDD.substr(dayOffset, dayCount));
+	}
+
+	bool operator==(Birthday b) const {
+		if (year != b.year) return false;
+		if (month != b.month) return false;
+		if (day != b.day) return false;
+		return true;
+	}
+	bool operator!=(Birthday b) const {
+		return !(*this==b);
 	}
 
 private:
@@ -100,6 +119,14 @@ public:
 	string getFirstName() { return name[FIRST]; }
 	string getLastName() { return name[LAST]; }
 
+	bool operator==(Name n) const {
+		if (name[FIRST] != n.name[FIRST]) return false;
+		if (name[LAST] != n.name[LAST]) return false;
+		return true;
+	}
+	bool operator!=(Name n) const {
+		return !(*this == n);
+	}
 
 private:
 	enum {
@@ -124,12 +151,36 @@ public:
 	: employeeNum(employeeNum), name(name), cl(cl), phoneNum(phoneNum), birthday(birthday), certi(certi){
 
 	}
+	Employ(vector<string> ConditionStr)
+	:employeeNum(stoi(ConditionStr[0])), name(ConditionStr[1]), phoneNum(ConditionStr[3]), birthday(ConditionStr[4]) {
+		if(ConditionStr[2] == "CL1") cl = enumCL::CL1;
+		else if (ConditionStr[2] == "CL2") cl = enumCL::CL2;
+		else if (ConditionStr[2] == "CL3") cl = enumCL::CL3;
+		else cl = enumCL::CL4;
+
+		if (ConditionStr[5] == "ADV") certi = enumCerti::ADV;
+		else if (ConditionStr[5] == "PRO") certi = enumCerti::PRO;
+		else certi = enumCerti::EX;
+	}
 	int getEmployeeNum() { return employeeNum; }
 	Name getName() { return name; }
 	enumCL getCl() { return cl; }
 	PhoneNumber getPhoneNum() { return phoneNum; }
 	Birthday getBirthday() { return birthday; }
 	enumCerti getCerti() { return certi; }
+
+	bool operator==(Employ e) const {
+		if (employeeNum != e.employeeNum) return false;
+		if (name != e.name) return false;
+		if (cl != e.cl) return false;
+		if (phoneNum != e.phoneNum) return false;
+		if (birthday != e.birthday) return false;
+		if (certi != e.certi) return false;
+		return true;
+	}
+	bool operator!=(Employ e) const{
+		return !(*this == e);
+	}
 
 private:
 	int employeeNum;
