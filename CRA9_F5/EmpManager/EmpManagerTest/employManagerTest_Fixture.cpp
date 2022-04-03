@@ -18,14 +18,16 @@ void EmployManagerFixture::makeSampleOutList() {
 
 TEST_F(EmployManagerFixture, cmdResultTostrListTest)
 {
+	vector<string> emptyList;
 	Name name{ "VXIHXOTH JHOP" };
 	PhoneNumber phoneNum{ "010-3112-2609" };
 	Birthday birthday{ "19771211" };
 	sampleCmdResult.list.push_back(Employ{ 15123099 , name, enumCL::CL2 , phoneNum, birthday, enumCerti::ADV });
 	sampleCmdResult.count = 1;
-	sampleOutList.push_back("ADD,15123099,VXIHXOTH JHOP,CL3,010-3112-2609,19771211,ADV");
+	sampleOutList.push_back("SCH,15123099,VXIHXOTH JHOP,CL3,010-3112-2609,19771211,ADV");
 
-	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList("ADD", sampleCmdResult));
+	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList("SCH", sampleCmdResult));
+	EXPECT_EQ(emptyList, empManager.cmdResultTostrList("ADD", sampleCmdResult));
 }
 
 TEST_F(EmployManagerFixture, runAddTest)
