@@ -18,6 +18,9 @@
     <ClCompile Include="DBInterfaceTest.cpp">
       <Filter>TestCode</Filter>
     </ClCompile>
+    <ClCompile Include="employManagerTest_Fixture.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -31,6 +34,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="CommandParserTest_Fixture.h">
+      <Filter>TestCode</Filter>
+    </ClInclude>
+    <ClInclude Include="employManagerTest_Fixture.h">
       <Filter>TestCode</Filter>
     </ClInclude>
   </ItemGroup>

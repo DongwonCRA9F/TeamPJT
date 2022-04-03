@@ -39,13 +39,21 @@
     <ClInclude Include="..\EmpManager\SampleClass.h" />
     <ClInclude Include="CommandProcessorTest_Fixture.h" />
     <ClInclude Include="CommandParserTest_Fixture.h" />
+    <ClInclude Include="employManagerTest_Fixture.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\EmpManager\CommandParser.cpp" />
-    <ClCompile Include="CommandParserTest_Fixture.cpp" />
-    <ClCompile Include="DBInterfaceTest.cpp" />
-    <ClCompile Include="EmployTest.cpp" />
+    <ClCompile Include="CommandParserTest_Fixture.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="DBInterfaceTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="employManagerTest_Fixture.cpp" />
+    <ClCompile Include="EmployTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CommandProcessorTest_Fixture.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
