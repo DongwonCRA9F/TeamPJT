@@ -27,7 +27,6 @@ TEST_F(EmployManagerFixture, cmdResultTostrListTest)
 	sampleOutList.push_back("SCH,15123099,VXIHXOTH JHOP,CL3,010-3112-2609,19771211,ADV");
 
 	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList(enumCommandList::SCH, sampleCmdResult));
-	EXPECT_EQ(emptyList, empManager.cmdResultTostrList(enumCommandList::ADD, sampleCmdResult));
 
 	sampleCmdResult.list.pop_back();
 	sampleCmdResult.count = 0;

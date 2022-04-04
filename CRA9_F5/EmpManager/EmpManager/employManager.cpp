@@ -5,7 +5,6 @@
 vector<string> EmployManager::runCommand(string input) {
 	vector<string> ret;
 
-	// Parsing 작업
 	try {
 		if (!cmdParser.parsing(input, ",")) {
 			throw exception();
@@ -28,45 +27,36 @@ vector<string> EmployManager::runCommand(string input) {
 	options = cmdParser.getOptions();
 	conditions = cmdParser.getConditions();
 
-	// Command 에 따라 cmdProcessor 호출
 	switch (cmd) {
 		case enumCommandList::ADD :
 			cmdProcessor = new CommandProcessorADD();
-			cmdResult = cmdProcessor->run(options, conditions);
 			break;
 		case enumCommandList::DEL :
 			cmdProcessor = new CommandProcessorDEL();
-			cmdResult = cmdProcessor->run(options, conditions);
-			if (options[0] == enumOptionList::None)
-				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
-			else
-				ret = cmdResultTostrList(cmd, cmdResult);
 			break;
 		case enumCommandList::MOD :
 			cmdProcessor = new CommandProcessorMOD();
-			cmdResult = cmdProcessor->run(options, conditions);
-			if (options[0] == enumOptionList::None)
-				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
-			else
-				ret = cmdResultTostrList(cmd, cmdResult);
 			break;
 		case enumCommandList::SCH :
 			cmdProcessor = new CommandProcessorSCH();
-			cmdResult = cmdProcessor->run(options, conditions);
-			if (options[0] == enumOptionList::None)
-				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
-			else
-				ret = cmdResultTostrList(cmd, cmdResult);
 			break;
 	}
+
+	cmdResult = cmdProcessor->run(options, conditions);
+
+	if (cmd == enumCommandList::ADD)
+		return ret;
+
+	if (options[0] == enumOptionList::None)
+		ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
+	else
+		ret = cmdResultTostrList(cmd, cmdResult);
+
 	return ret;
 }
 
 vector<string> EmployManager::cmdResultTostrList(enumCommandList cmd, CommandResult cmdResult) {
 	vector<string> ret;
-
-	if (cmd == enumCommandList::ADD)
-		return ret;
 
 	if (cmdResult.count == 0) {
 		ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
