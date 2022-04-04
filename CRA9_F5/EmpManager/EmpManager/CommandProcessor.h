@@ -4,7 +4,6 @@
 #include "DatabaseInterface.h"
 
 using namespace std;
-class TempDataBase {};
 
 class CommandProcessor {
 public:
