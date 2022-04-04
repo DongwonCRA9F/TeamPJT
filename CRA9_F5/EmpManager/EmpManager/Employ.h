@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <unordered_map>
 using namespace std;
 
 enum class enumCL {
@@ -10,6 +11,7 @@ enum class enumCL {
 	CL4 = 4,
 	CL_MAX = 4
 };
+static const unordered_map<string, enumCL> clMap = { {"CL1", enumCL::CL1},{"CL2", enumCL::CL2},{"CL3", enumCL::CL3}, {"CL4", enumCL::CL4} };
 
 class PhoneNumber {
 public:
@@ -143,6 +145,8 @@ enum class enumCerti {
 	EX,
 	Certi_MAX
 };
+static const unordered_map<string, enumCerti> certiMap = { {"ADV", enumCerti::ADV},{"PRO", enumCerti::PRO},{"EX", enumCerti::EX} };
+
 enum class enumEmploy {
 	EMPLOYEENUM = 0,
 	NAME,
@@ -152,6 +156,8 @@ enum class enumEmploy {
 	CERTI,
 	Employ_MAX
 };
+static const unordered_map<string, enumEmploy> employMap
+= { {"employeeNum", enumEmploy::EMPLOYEENUM}, {"name", enumEmploy::NAME}, {"cl", enumEmploy::CL}, {"phoneNum", enumEmploy::PHONENUM} , {"birthday", enumEmploy::BIRTHDAY} , {"certi", enumEmploy::CERTI} };
 
 class Employ {
 public:
