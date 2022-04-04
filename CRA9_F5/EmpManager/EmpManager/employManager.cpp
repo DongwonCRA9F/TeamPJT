@@ -2,10 +2,31 @@
 
 #include "employManager.h"
 
+
+#ifdef _UNIT_TEST
+CommandProcessor* EmployManager::getProcessor(enumCommandList cmd) {
+	return cmdProcessor;
+}
+#else
+CommandProcessor* EmployManager::getProcessor(enumCommandList cmd) {
+	switch (cmd) {
+	case enumCommandList::ADD:
+		return  new CommandProcessorADD<DatabaseInterface>();
+	case enumCommandList::DEL:
+		return  new CommandProcessorDEL<DatabaseInterface>();
+	case enumCommandList::MOD:
+		return  new CommandProcessorMOD<DatabaseInterface>();
+	case enumCommandList::SCH:
+		return new CommandProcessorSCH<DatabaseInterface>();
+	}
+}
+#endif
+
+
+
 vector<string> EmployManager::runCommand(string input) {
 	vector<string> ret;
 
-	// Parsing 작업
 	try {
 		if (!cmdParser.parsing(input, ",")) {
 			throw exception();
@@ -28,45 +49,23 @@ vector<string> EmployManager::runCommand(string input) {
 	options = cmdParser.getOptions();
 	conditions = cmdParser.getConditions();
 
-	// Command 에 따라 cmdProcessor 호출
-	switch (cmd) {
-		case enumCommandList::ADD :
-			cmdProcessor = new CommandProcessorADD<DatabaseInterface>();
-			cmdResult = cmdProcessor->run(options, conditions);
-			break;
-		case enumCommandList::DEL :
-			cmdProcessor = new CommandProcessorDEL<DatabaseInterface>();
-			cmdResult = cmdProcessor->run(options, conditions);
-			if (options[0] == enumOptionList::None)
-				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
-			else
-				ret = cmdResultTostrList(cmd, cmdResult);
-			break;
-		case enumCommandList::MOD :
-			cmdProcessor = new CommandProcessorMOD<DatabaseInterface>();
-			cmdResult = cmdProcessor->run(options, conditions);
-			if (options[0] == enumOptionList::None)
-				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
-			else
-				ret = cmdResultTostrList(cmd, cmdResult);
-			break;
-		case enumCommandList::SCH :
-			cmdProcessor = new CommandProcessorSCH<DatabaseInterface>();
-			cmdResult = cmdProcessor->run(options, conditions);
-			if (options[0] == enumOptionList::None)
-				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
-			else
-				ret = cmdResultTostrList(cmd, cmdResult);
-			break;
-	}
+	cmdProcessor = getProcessor(cmd);
+
+	cmdResult = cmdProcessor->run(options, conditions);
+
+	if (cmd == enumCommandList::ADD)
+		return ret;
+
+	if (options[0] == enumOptionList::None)
+		ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
+	else
+		ret = cmdResultTostrList(cmd, cmdResult);
+
 	return ret;
 }
 
 vector<string> EmployManager::cmdResultTostrList(enumCommandList cmd, CommandResult cmdResult) {
 	vector<string> ret;
-
-	if (cmd == enumCommandList::ADD)
-		return ret;
 
 	if (cmdResult.count == 0) {
 		ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());

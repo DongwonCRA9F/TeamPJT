@@ -406,4 +406,24 @@ namespace
 		EXPECT_EQ(em4, emList2[1]);
 		EXPECT_EQ(em5, emList2[2]);
 	}
+
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByPhoneNumChangePhoneNum)
+	{
+		Employ emOrigin = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+		Employ emUpdate = Employ(19551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+
+		EXPECT_TRUE(db.insertItem(emOrigin));
+
+		vector<Employ> emListOrigin = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emOrigin, emListOrigin[0]);
+
+		vector<Employ> emListPrev = db.updateItems(enumOptionList::None, { "employeeNum", "20551235" }, { "employeeNum", "19551235" });
+
+		EXPECT_EQ(emOrigin, emListPrev[0]);
+
+		vector<Employ> emListUpdate = db.selectItems(enumOptionList::None, { "employeeNum", "19551235" });
+
+		EXPECT_EQ(emUpdate, emListUpdate[0]);
+	}
 }

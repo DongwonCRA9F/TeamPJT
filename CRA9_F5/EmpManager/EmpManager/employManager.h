@@ -3,15 +3,21 @@
 #include <string>
 #include <vector>
 #include "CommandParser.h"
-#include "CommandProcessor.h"
+
 #include "Employ.h"
 #include "CommandResult.h"
 #include "DatabaseInterface.h"
 
+#ifdef _UNIT_TEST
+#include "../EmpManagerTest/MockCommandProcessor.h"
+#define private public
+#else
+#include "CommandProcessor.h"
+#endif
+
 using namespace std;
 
 class EmployManager {
-
 private:
 	enumCommandList cmd;
 	vector<string> conditions;
@@ -23,6 +29,9 @@ private:
 	vector<string> cmdList = { "ADD", "DEL", "SCH", "MOD" };
 	vector<string> clList = { "CL1", "CL2", "CL3", "CL4" };
 	vector<string> certiList = { "ADV", "PRO", "EX" };
+
+
+	CommandProcessor* getProcessor(enumCommandList cmd);
 
 public:
 	vector<string> runCommand(string input);
