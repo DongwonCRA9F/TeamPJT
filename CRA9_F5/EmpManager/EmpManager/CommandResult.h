@@ -10,10 +10,7 @@ public:
 	int count;
 	vector<Employ> list;
 
-	CommandResult() {
-		count = 0;
-		list.clear();
-	};
+	CommandResult(): count(0) {};
 
 	CommandResult(int count_param, vector<Employ> list_param) {
 		count = count_param;
