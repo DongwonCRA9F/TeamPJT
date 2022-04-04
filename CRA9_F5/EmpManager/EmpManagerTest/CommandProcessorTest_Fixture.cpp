@@ -400,3 +400,69 @@ TEST_F(CommandProcessorFixture, DELTest3) {
 	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
 	EXPECT_EQ(CR, CR_exp);
 }
+
+
+TEST_F(CommandProcessorFixture, DELgreaterthan5) {
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<enumOptionList> input_option = { enumOptionList::None, enumOptionList::None, enumOptionList::None };
+	vector<string> input_empVecStr1 = { "15123099","VXIHXOTH JHOP","CL3","010-3112-2609","19771211","ADV" };
+	vector<string> input_empVecStr2 = { "17112609", "FB NTAWR", "CL4", "010-5645-6122", "19861203", "PRO" };
+	vector<string> input_empVecStr3 = { "18115040", "TTETHU HBO", "CL3", "010-4581-2050", "20080718", "ADV" };
+	vector<string> input_empVecStr4 = { "88114052", "NQ LVARW", "CL4", "010-4528-3059", "20080718", "PRO" };
+	vector<string> input_empVecStr5 = { "99115601","VXIHXOTH JHOP","CL4","010-1234-5678","20080718","EX" };
+	vector<string> input_empVecStr6 = { "16678201","VXIHXOTH HBO","CL4","010-1234-5678","20080718","PRO" };
+	vector<string> input_empVecStr7 = { "12625901","LVARW JHOP","CL4","010-1234-5678","20080718","PRO" };
+	vector<string> input_empVecStr8 = { "06688301","NTAWR JHOP","CL4","010-1234-5678","20080718","EX" };
+
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times(8).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	CR = cmdADD.run(input_option, input_empVecStr1);
+	ASSERT_EQ(CR.count, 1);
+	CR = cmdADD.run(input_option, input_empVecStr2);
+	ASSERT_EQ(CR.count, 1);
+	CR = cmdADD.run(input_option, input_empVecStr3);
+	ASSERT_EQ(CR.count, 1);
+	CR = cmdADD.run(input_option, input_empVecStr4);
+	ASSERT_EQ(CR.count, 1);
+	CR = cmdADD.run(input_option, input_empVecStr5);
+	ASSERT_EQ(CR.count, 1);
+	CR = cmdADD.run(input_option, input_empVecStr6);
+	ASSERT_EQ(CR.count, 1);
+	CR = cmdADD.run(input_option, input_empVecStr7);
+	ASSERT_EQ(CR.count, 1);
+	CR = cmdADD.run(input_option, input_empVecStr8);
+	ASSERT_EQ(CR.count, 1);
+
+	//DELgreaterthan5
+	CommandProcessorDEL<MockDatabase> cmdDEL = CommandProcessorDEL<MockDatabase>();
+	vector<Employ> sorted_result;
+	sorted_result.push_back(Employ(input_empVecStr4));
+	sorted_result.push_back(Employ(input_empVecStr5));
+	sorted_result.push_back(Employ(input_empVecStr8));
+	sorted_result.push_back(Employ(input_empVecStr7));
+	sorted_result.push_back(Employ(input_empVecStr6));
+
+	vector<Employ> raw_result;
+	raw_result.push_back(Employ(input_empVecStr3));
+	raw_result.push_back(Employ(input_empVecStr4));
+	raw_result.push_back(Employ(input_empVecStr5));
+	raw_result.push_back(Employ(input_empVecStr6));
+	raw_result.push_back(Employ(input_empVecStr7));
+	raw_result.push_back(Employ(input_empVecStr8));
+
+	EXPECT_CALL(MockDatabase::getInstance(), deleteItems(_, _)).
+		Times(1).
+		WillOnce(Return(raw_result));
+
+	CR = cmdDEL.run(input_option, { "birthday", "20080718" });
+	CommandResult CR_exp = CommandResult((int)sorted_result.size(), sorted_result);
+	vector<Employ> CR_sorted = CR.getDetailResults();
+	ASSERT_EQ(CR_sorted.size(), CR_exp.list.size());
+
+	for (int i = 0; i < CR_exp.list.size(); ++i) {
+		EXPECT_EQ(CR_sorted[i], CR_exp.list[i]);
+	}
+}
