@@ -23,6 +23,9 @@
     <ClCompile Include="..\EmpManager\CommandParser.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\EmpManager\employManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -40,6 +43,12 @@
     </ClInclude>
     <ClInclude Include="MockDatabase.h">
       <Filter>Mock</Filter>
+    </ClInclude>
+    <ClInclude Include="MockCommandProcessor.h">
+      <Filter>Mock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EmpManager\employManager.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

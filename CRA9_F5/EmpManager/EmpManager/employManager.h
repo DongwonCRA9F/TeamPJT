@@ -3,15 +3,20 @@
 #include <string>
 #include <vector>
 #include "CommandParser.h"
-#include "CommandProcessor.h"
+
 #include "Employ.h"
 #include "CommandResult.h"
 #include "DatabaseInterface.h"
 
+#ifdef _UNIT_TEST
+#include "../EmpManagerTest/MockCommandProcessor.h"
+#else
+#include "CommandProcessor.h"
+#endif
+
 using namespace std;
 
 class EmployManager {
-
 private:
 	enumCommandList cmd;
 	vector<string> conditions;
