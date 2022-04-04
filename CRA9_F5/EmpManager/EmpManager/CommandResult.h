@@ -5,8 +5,6 @@
 
 using namespace std;
 
-class TempEmploy {};
-
 class CommandResult {
 public:
 	int count;
