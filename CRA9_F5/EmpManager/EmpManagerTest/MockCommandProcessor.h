@@ -5,7 +5,9 @@ using namespace testing;
 
 class CommandProcessor {
 public:
-	virtual CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition);
+	/*virtual CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) {
+		return run
+	}*/
 
 	MOCK_METHOD(CommandResult, run, (vector<enumOptionList>, vector<string>));
 protected:
