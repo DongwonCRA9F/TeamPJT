@@ -26,19 +26,6 @@ vector<string> CommandParser::Split(string input, string delimiter)
 	return SplitedResult;
 }
 
-bool CommandParser::SetCommand(string cmd)
-{
-	if (cmd == "ADD") Command = enumCommandList::ADD;
-	else if (cmd == "MOD") Command = enumCommandList::MOD;
-	else if (cmd == "DEL") Command = enumCommandList::DEL;
-	else if (cmd == "SCH") Command = enumCommandList::SCH;
-	else {
-		return false;
-	}
-
-	return true;
-}
-
 enumOptionList CommandParser::SetOption_1(string optionString)
 {
 	if (optionString == " ") return enumOptionList::None;
@@ -92,45 +79,44 @@ bool CommandParser::parsing(string InputArg, const string delimiter) {
 	InitData();
 
 	vector<string> SplitedString = Split(InputArg, delimiter);
-
-	if (SplitedString.size() <= CommandNum + OptionNum) {
-		throw invalid_argument("Split하려는 argument 개수가 너무 작습니다.");
-	}
-
-	if (SetCommand(SplitedString[0]) == false) {
-		throw invalid_Command("사용하지 않은 cmd가 들어왔습니다.");
-	}
-
-	Conditions.assign(SplitedString.begin() + CommandNum + OptionNum, SplitedString.end());
-
-
-	try {
-		CommandOption.push_back(SetOption_1(SplitedString[1]));
-		CommandOption.push_back(SetOption_2(SplitedString[2], Conditions[0]));
-		CommandOption.push_back(SetOption_3(SplitedString[3]));
-	}
-	catch (invalid_Options& e){
-		throw e;
-	}
-
-
-
-
-
-
-	// valid 검사
-
 	CommandParserChecker* ValidChecker;
 
-	if (Command == enumCommandList::ADD) ValidChecker = new AddCommandChecker();
-	else if (Command == enumCommandList::MOD) ValidChecker = new ModCommandChecker();
-	else if (Command == enumCommandList::DEL) ValidChecker = new DelCommandChecker();
-	else if (Command == enumCommandList::SCH) ValidChecker = new SchCommandChecker();
-	else return false;
-
 	try {
+		if (SplitedString.size() <= CommandNum + OptionNum) {
+			throw invalid_argument("Split하려는 argument 개수가 너무 작습니다.");
+		}
+
+		if (SplitedString[0] == "ADD") {
+			Command = enumCommandList::ADD;
+			ValidChecker = new AddCommandChecker();
+		}
+		else if (SplitedString[0] == "MOD") {
+			Command = enumCommandList::MOD;
+			ValidChecker = new ModCommandChecker();
+		}
+		else if (SplitedString[0] == "DEL") {
+			Command = enumCommandList::DEL;
+			ValidChecker = new DelCommandChecker();
+		}
+		else if (SplitedString[0] == "SCH") {
+			Command = enumCommandList::SCH;
+			ValidChecker = new SchCommandChecker();
+		}
+		else {
+			throw invalid_Command("사용하지 않은 cmd가 들어왔습니다.");
+		}
+
+		CommandOption.push_back(SetOption_1(SplitedString[1]));
+		CommandOption.push_back(SetOption_2(SplitedString[2], SplitedString[4]));
+		CommandOption.push_back(SetOption_3(SplitedString[3]));
+
+		Conditions.assign(SplitedString.begin() + CommandNum + OptionNum, SplitedString.end());
+
 		ValidChecker->OptionCheck(CommandOption, Conditions[0]);
 		ValidChecker->ArgSizeCheck(Conditions);
+	}
+	catch (invalid_Command& e) {
+		throw e;
 	}
 	catch (invalid_argument& e) {
 		throw e;

@@ -65,7 +65,6 @@ private:
 
 	void InitData();
 	vector<string> Split(string input, string delimiter);
-	bool SetCommand(string cmd);
 	enumOptionList SetOption_1(string optionString);
 	enumOptionList SetOption_2(string optionString, string FirstColumn);
 	enumOptionList SetOption_3(string optionString);
