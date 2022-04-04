@@ -14,12 +14,6 @@ int main(int argc, char* argv[]) {
 	if (argc != 3)
 		exit(0);
 
-	if (strcmp(argv[1], "input.txt") != 0)
-		exit(0);
-
-	if (strcmp(argv[2], "output.txt") != 0)
-		exit(0);
-
 	ifstream inputFile(argv[1]);
 	if (!inputFile) {
 		cout << "ERROR, file is not exists" << endl;
