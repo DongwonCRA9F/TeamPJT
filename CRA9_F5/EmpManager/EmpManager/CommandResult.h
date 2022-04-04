@@ -1,17 +1,17 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include "Employ.h"
 
 using namespace std;
 
-class TempEmploy {};
-
 class CommandResult {
 public:
 	int count;
 	vector<Employ> list;
 
-	CommandResult() {};
+	CommandResult(): count(0) {};
+
 	CommandResult(int count_param, vector<Employ> list_param) {
 		count = count_param;
 		list.clear();
