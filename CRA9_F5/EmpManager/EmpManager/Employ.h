@@ -45,6 +45,10 @@ public:
 		return !(*this == p);
 	}
 
+	void operator=(PhoneNumber phoneNumber) {
+		setPhoneNumber(phoneNumber.getPhoneNumber());
+	}
+
 private:
 	enum {
 		FIRST,
@@ -85,6 +89,10 @@ public:
 	}
 	bool operator!=(Birthday b) const {
 		return !(*this==b);
+	}
+
+	void operator=(Birthday birthday) {
+		setYYYYMMDD(birthday.getBirthday());
 	}
 
 private:
@@ -128,6 +136,10 @@ public:
 	}
 	bool operator!=(Name n) const {
 		return !(*this == n);
+	}
+
+	void operator=(Name name) {
+		setName(name.getFullName());
 	}
 
 private:
@@ -199,6 +211,15 @@ public:
 	}
 	bool operator!=(Employ e) const{
 		return !(*this == e);
+	}
+
+	void operator=(const Employ& employee) {
+		this->employeeNum = employee.employeeNum;
+		this->name = employee.name;
+		this->cl = employee.cl;
+		this->phoneNum = employee.phoneNum;
+		this->birthday = employee.birthday;
+		this->certi = employee.certi;
 	}
 
 private:
