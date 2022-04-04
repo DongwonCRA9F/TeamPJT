@@ -8,14 +8,20 @@ vector<string> EmployManager::runCommand(string input) {
 	// Parsing 작업
 	try {
 		if (!cmdParser.parsing("ADD,n, , ,01122329,DN WD,CL4,010-7174-5680,20071117,PRO", ",")) {
-			// Parsing 실패.
+			throw exception();
 		}
 	}
 	catch (const invalid_Command& e) {
 		cout << e.what() << endl;
+		return ret;
 	}
 	catch (const invalid_Options& e) {
 		cout << e.what() << endl;
+		return ret;
+	}
+	catch (const exception& e) {
+		cout << "비정상적인 종료가 감지되었습니다" << endl;
+		return ret;
 	}
 
 	cmd = cmdParser.getCommand();
