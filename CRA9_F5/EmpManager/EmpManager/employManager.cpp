@@ -7,7 +7,7 @@ vector<string> EmployManager::runCommand(string input) {
 
 	// Parsing ÀÛ¾÷
 	try {
-		if (!cmdParser.parsing("ADD,n, , ,01122329,DN WD,CL4,010-7174-5680,20071117,PRO", ",")) {
+		if (!cmdParser.parsing(input, ",")) {
 			throw exception();
 		}
 	}
@@ -38,44 +38,43 @@ vector<string> EmployManager::runCommand(string input) {
 			cmdProcessor = new CommandProcessorDEL();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
-				ret.push_back("DEL," + cmdResult.getSimpleResults());
+				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
 			else
-				ret = cmdResultTostrList("DEL", cmdResult);
+				ret = cmdResultTostrList(cmd, cmdResult);
 			break;
 		case enumCommandList::MOD :
 			cmdProcessor = new CommandProcessorMOD();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
-				ret.push_back("MOD," + cmdResult.getSimpleResults());
+				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
 			else
-				ret = cmdResultTostrList("MOD", cmdResult);
+				ret = cmdResultTostrList(cmd, cmdResult);
 			break;
 		case enumCommandList::SCH :
 			cmdProcessor = new CommandProcessorSCH();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
-				ret.push_back("SCH," + cmdResult.getSimpleResults());
+				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
 			else
-				ret = cmdResultTostrList("SCH", cmdResult);
+				ret = cmdResultTostrList(cmd, cmdResult);
 			break;
 	}
-
 	return ret;
 }
 
-vector<string> EmployManager::cmdResultTostrList(string cmd, CommandResult cmdResult) {
+vector<string> EmployManager::cmdResultTostrList(enumCommandList cmd, CommandResult cmdResult) {
 	vector<string> ret;
 
-	if (cmd == "ADD")
+	if (cmd == enumCommandList::ADD)
 		return ret;
 
 	if (cmdResult.count == 0) {
-		ret.push_back(cmd + "," + cmdResult.getSimpleResults());
+		ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
 		return ret;
 	}
 
 	for (auto& employ : cmdResult.list) {
-		string str = cmd;
+		string str = cmdList[static_cast<int>(cmd)];
 		str += ("," + to_string(employ.getEmployeeNum()));
 		str += ("," + employ.getName().getFullName());
 		str += ("," + clList[static_cast<int>(employ.getCl())]);

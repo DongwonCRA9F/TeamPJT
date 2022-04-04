@@ -26,14 +26,14 @@ TEST_F(EmployManagerFixture, cmdResultTostrListTest)
 	sampleCmdResult.count = 1;
 	sampleOutList.push_back("SCH,15123099,VXIHXOTH JHOP,CL3,010-3112-2609,19771211,ADV");
 
-	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList("SCH", sampleCmdResult));
-	EXPECT_EQ(emptyList, empManager.cmdResultTostrList("ADD", sampleCmdResult));
+	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList(enumCommandList::SCH, sampleCmdResult));
+	EXPECT_EQ(emptyList, empManager.cmdResultTostrList(enumCommandList::ADD, sampleCmdResult));
 
 	sampleCmdResult.list.pop_back();
 	sampleCmdResult.count = 0;
 	sampleOutList.pop_back();
 	sampleOutList.push_back("SCH,NONE");
-	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList("SCH", sampleCmdResult));
+	EXPECT_EQ(sampleOutList, empManager.cmdResultTostrList(enumCommandList::SCH, sampleCmdResult));
 }
 
 TEST_F(EmployManagerFixture, runAddTest)
