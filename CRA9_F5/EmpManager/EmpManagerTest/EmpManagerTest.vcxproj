@@ -45,6 +45,8 @@
   <ItemGroup>
     <ClCompile Include="..\EmpManager\CommandParser.cpp" />
     <ClCompile Include="CommandParserTest_Fixture.cpp" />
+    <ClCompile Include="CommandProcessorTest_Fixture_ADD.cpp" />
+    <ClCompile Include="CommandProcessorTest_Fixture_SCH.cpp" />
     <ClCompile Include="DBInterfaceTest.cpp" />
     <ClCompile Include="employManagerTest_Fixture.cpp" />
     <ClCompile Include="EmployTest.cpp" />

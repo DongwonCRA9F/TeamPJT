@@ -23,6 +23,12 @@
     <ClCompile Include="..\EmpManager\CommandParser.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="CommandProcessorTest_Fixture_SCH.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandProcessorTest_Fixture_ADD.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
