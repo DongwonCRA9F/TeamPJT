@@ -51,10 +51,6 @@ public:
 		return *this;
 	}
 
-	void operator=(PhoneNumber phoneNumber) {
-		setPhoneNumber(phoneNumber.getPhoneNumber());
-	}
-
 private:
 	enum {
 		FIRST,
@@ -103,10 +99,6 @@ public:
 		return *this;
 	}
 
-	void operator=(Birthday birthday) {
-		setYYYYMMDD(birthday.getBirthday());
-	}
-
 private:
 	int year;
 	const int yearOffset = 0;
@@ -153,10 +145,6 @@ public:
 		name[FIRST] = n.name[FIRST];
 		name[LAST] = n.name[LAST];
 		return *this;
-	}
-
-	void operator=(Name name) {
-		setName(name.getFullName());
 	}
 
 private:
