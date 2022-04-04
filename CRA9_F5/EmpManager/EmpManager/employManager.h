@@ -27,7 +27,7 @@ private:
 	CommandResult cmdResult;
 
 	vector<string> cmdList = { "ADD", "DEL", "SCH", "MOD" };
-	vector<string> clList = { "CL1", "CL2", "CL3", "CL4" };
+	vector<string> clList = { "NONE", "CL1", "CL2", "CL3", "CL4" };
 	vector<string> certiList = { "ADV", "PRO", "EX" };
 
 
