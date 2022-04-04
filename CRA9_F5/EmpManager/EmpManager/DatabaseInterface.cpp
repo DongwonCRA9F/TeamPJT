@@ -11,8 +11,7 @@ bool DatabaseInterface::insertItem(Employ employee)
 
 vector<Employ> DatabaseInterface::selectItems(enumOptionList option, DatabaseSearchItem item)
 {
-	vector<Employ> employeeList;
-	return employeeList;
+	return databaseSearch[static_cast<int>(employMap.find(item.column)->second)]->search(employDB, option, item.value);
 }
 
 vector<Employ> DatabaseInterface::updateItems(enumOptionList option, DatabaseSearchItem origin, DatabaseSearchItem update)
