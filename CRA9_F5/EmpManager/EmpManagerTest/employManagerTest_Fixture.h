@@ -12,6 +12,7 @@ protected:
 	void TearDown()override;
 
 	EmployManager empManager;
+	CommandResult sampleCmdResult;
 	vector<Employ> sampleEmpList;
 	vector<string> sampleOutList;
 
