@@ -38,6 +38,8 @@
     </ClInclude>
     <ClInclude Include="employManagerTest_Fixture.h">
       <Filter>TestCode</Filter>
+    <ClInclude Include="MockDatabase.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

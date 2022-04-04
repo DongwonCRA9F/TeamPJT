@@ -26,3 +26,9 @@ vector<Employ> DatabaseInterface::deleteItems(enumOptionList option, DatabaseSea
 	vector<Employ> employeeList;
 	return employeeList;
 }
+
+Employ DatabaseInterface::deleteItem(int employNum)
+{
+	Employ employee;
+	return employee;
+}
