@@ -29,4 +29,11 @@ public:
 	string getSimpleResults() {
 		return count == 0 ? string("NONE") : to_string(count);
 	}
+
+	vector<Employ> getDetailResults() {
+		vector<Employ> result;
+		result.reserve(5);
+		// TODO!! TODO!!
+		return result;
+	}
 };
