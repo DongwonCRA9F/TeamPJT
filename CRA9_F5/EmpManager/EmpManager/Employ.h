@@ -143,6 +143,15 @@ enum class enumCerti {
 	EX,
 	Certi_MAX
 };
+enum class enumEmploy {
+	EMPLOYEENUM = 0,
+	NAME,
+	CL,
+	PHONENUM,
+	BIRTHDAY,
+	CERTI,
+	Employ_MAX
+};
 
 class Employ {
 public:
@@ -152,16 +161,20 @@ public:
 
 	}
 	Employ(vector<string> ConditionStr)
-	:employeeNum(stoi(ConditionStr[0])), name(ConditionStr[1]), phoneNum(ConditionStr[3]), birthday(ConditionStr[4]) {
-		if(ConditionStr[2] == "CL1") cl = enumCL::CL1;
-		else if (ConditionStr[2] == "CL2") cl = enumCL::CL2;
-		else if (ConditionStr[2] == "CL3") cl = enumCL::CL3;
+		:employeeNum(stoi(ConditionStr[static_cast<int>(enumEmploy::EMPLOYEENUM)])),
+		name(ConditionStr[static_cast<int>(enumEmploy::NAME)]),
+		phoneNum(ConditionStr[static_cast<int>(enumEmploy::PHONENUM)]),
+		birthday(ConditionStr[static_cast<int>(enumEmploy::BIRTHDAY)]) {
+		if (ConditionStr[static_cast<int>(enumEmploy::CL)] == "CL1") cl = enumCL::CL1;
+		else if (ConditionStr[static_cast<int>(enumEmploy::CL)] == "CL2") cl = enumCL::CL2;
+		else if (ConditionStr[static_cast<int>(enumEmploy::CL)]== "CL3") cl = enumCL::CL3;
 		else cl = enumCL::CL4;
 
-		if (ConditionStr[5] == "ADV") certi = enumCerti::ADV;
-		else if (ConditionStr[5] == "PRO") certi = enumCerti::PRO;
+		if (ConditionStr[static_cast<int>(enumEmploy::CERTI)] == "ADV") certi = enumCerti::ADV;
+		else if (ConditionStr[static_cast<int>(enumEmploy::CERTI)] == "PRO") certi = enumCerti::PRO;
 		else certi = enumCerti::EX;
 	}
+
 	int getEmployeeNum() { return employeeNum; }
 	Name getName() { return name; }
 	enumCL getCl() { return cl; }
