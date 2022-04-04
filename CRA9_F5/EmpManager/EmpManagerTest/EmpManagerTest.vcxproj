@@ -44,16 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\EmpManager\CommandParser.cpp" />
-    <ClCompile Include="CommandParserTest_Fixture.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="DBInterfaceTest.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="CommandParserTest_Fixture.cpp" />
+    <ClCompile Include="DBInterfaceTest.cpp" />
     <ClCompile Include="employManagerTest_Fixture.cpp" />
-    <ClCompile Include="EmployTest.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="EmployTest.cpp" />
     <ClCompile Include="CommandProcessorTest_Fixture.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
