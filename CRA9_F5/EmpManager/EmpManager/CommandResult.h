@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "Employ.h"
 
 using namespace std;
@@ -33,7 +34,22 @@ public:
 	vector<Employ> getDetailResults() {
 		vector<Employ> result;
 		result.reserve(5);
-		// TODO!! TODO!!
+		sort(list.begin(), list.end(), [this](Employ a, Employ b) {
+			return MakeFullEmployeeNum(a.getEmployeeNum()) < MakeFullEmployeeNum(b.getEmployeeNum());
+		});
+		for (auto employee : list) {
+			result.push_back(employee);
+			if (result.size() >= 5)
+				return result;
+		}
 		return result;
 	}
+
+	int MakeFullEmployeeNum(int partial_EmployNum) {
+		if (partial_EmployNum < 69000000) {
+			return partial_EmployNum + 2000000000;
+		}
+		return partial_EmployNum + 1900000000;
+	}
 };
+
