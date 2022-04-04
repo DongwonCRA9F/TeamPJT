@@ -7,7 +7,7 @@ vector<string> EmployManager::runCommand(string input) {
 
 	// Parsing ÀÛ¾÷
 	try {
-		if (!cmdParser.parsing("ADD,n, , ,01122329,DN WD,CL4,010-7174-5680,20071117,PRO", ",")) {
+		if (!cmdParser.parsing(input, ",")) {
 			throw exception();
 		}
 	}
