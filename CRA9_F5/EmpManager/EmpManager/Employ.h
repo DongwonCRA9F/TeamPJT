@@ -44,6 +44,12 @@ public:
 	bool operator!=(PhoneNumber p) const {
 		return !(*this == p);
 	}
+	PhoneNumber& operator=(const PhoneNumber& p) {
+		phoneNumber[FIRST] = p.phoneNumber[FIRST];
+		phoneNumber[MIDDLE] = p.phoneNumber[MIDDLE];
+		phoneNumber[LAST] = p.phoneNumber[LAST];
+		return *this;
+	}
 
 private:
 	enum {
@@ -85,6 +91,12 @@ public:
 	}
 	bool operator!=(Birthday b) const {
 		return !(*this==b);
+	}
+	Birthday& operator=(const Birthday& b) {
+		year = b.year;
+		month = b.month;
+		day = b.day;
+		return *this;
 	}
 
 private:
@@ -128,6 +140,11 @@ public:
 	}
 	bool operator!=(Name n) const {
 		return !(*this == n);
+	}
+	Name operator=(const Name& n) {
+		name[FIRST] = n.name[FIRST];
+		name[LAST] = n.name[LAST];
+		return *this;
 	}
 
 private:
@@ -199,6 +216,16 @@ public:
 	}
 	bool operator!=(Employ e) const{
 		return !(*this == e);
+	}
+	Employ& operator=(Employ e) {
+		employeeNum = e.employeeNum;
+		name = e.name;
+		cl = e.cl;
+		phoneNum = e.phoneNum;
+		birthday = e.birthday;
+		certi = e.certi;
+
+		return *this;
 	}
 
 private:
