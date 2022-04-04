@@ -152,7 +152,6 @@
     <ClInclude Include="DatabaseSearch.h" />
     <ClInclude Include="Employ.h" />
     <ClInclude Include="employManager.h" />
-    <ClInclude Include="SampleClass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
