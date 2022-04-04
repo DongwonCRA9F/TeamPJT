@@ -13,4 +13,8 @@ public:
 	bool operator==(CommandResult CR) const {
 		return false;
 	}
+
+	string getSimpleResults() {
+		return count == 0 ? string("NONE") : to_string(count);
+	}
 };
