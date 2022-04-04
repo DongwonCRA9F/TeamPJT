@@ -32,7 +32,7 @@ vector<string> EmployManager::runCommand(string input) {
 			cmdProcessor = new CommandProcessorDEL();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
-				ret.push_back("DEL," + to_string(cmdResult.count));
+				ret.push_back("DEL," + cmdResult.getSimpleResults());
 			else
 				ret = cmdResultTostrList("DEL", cmdResult);
 			break;
@@ -40,7 +40,7 @@ vector<string> EmployManager::runCommand(string input) {
 			cmdProcessor = new CommandProcessorMOD();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
-				ret.push_back("MOD," + to_string(cmdResult.count));
+				ret.push_back("MOD," + cmdResult.getSimpleResults());
 			else
 				ret = cmdResultTostrList("MOD", cmdResult);
 			break;
@@ -48,7 +48,7 @@ vector<string> EmployManager::runCommand(string input) {
 			cmdProcessor = new CommandProcessorSCH();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
-				ret.push_back("SCH," + to_string(cmdResult.count));
+				ret.push_back("SCH," + cmdResult.getSimpleResults());
 			else
 				ret = cmdResultTostrList("SCH", cmdResult);
 			break;
@@ -64,7 +64,7 @@ vector<string> EmployManager::cmdResultTostrList(string cmd, CommandResult cmdRe
 		return ret;
 
 	if (cmdResult.count == 0) {
-		ret.push_back(cmd + ",NONE");
+		ret.push_back(cmd + "," + cmdResult.getSimpleResults());
 		return ret;
 	}
 
