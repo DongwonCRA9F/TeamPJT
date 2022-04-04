@@ -8,7 +8,7 @@ TEST_F(CommandProcessorFixture, ADDTest_기본테스트) {
 
 	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
 		Times(1).
-		WillOnce(Return(true));
+		WillRepeatedly(Return(true));
 
 	vector<enumOptionList> input1_1 = { enumOptionList::None, enumOptionList::None, enumOptionList::None };
 	vector<string> input1_2 = { "15123099","VXIHXOTH JHOP","CL3","010-3112-2609","19771211","ADV" };
@@ -46,7 +46,7 @@ TEST_F(CommandProcessorFixture, ADDTest_사원번호) {
 
 	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
 		Times((int)input_OK_List.size()).
-		WillOnce(Return(true));
+		WillRepeatedly(Return(true));
 	CommandResult CR;
 	for (vector<string> input_OK : input_OK_List) {
 		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_OK);
@@ -69,10 +69,12 @@ TEST_F(CommandProcessorFixture, ADDTest_성명) {
 	input_NG_List.push_back(	{ "15123099",	"SUNG2 MYEONG",			"CL3",	"010-3112-2609","19771211",	"ADV" }); //숫자 포함 (성)
 	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG!",			"CL3",	"010-3112-2609","19771211",	"ADV" }); //특수문자 포함 (이름)
 	input_NG_List.push_back(	{ "15123099",	"SUNG? MYEONG",			"CL3",	"010-3112-2609","19771211",	"ADV" }); //특수문자 포함 (성)
+	input_NG_List.push_back(	{ "15123099",	" SUNG MYEONG",			"CL3",	"010-3112-2609","19771211",	"ADV" }); //공백문자로 시작
+	input_NG_List.push_back(	{ "15123099",	"SUNG_MYEONG",			"CL3",	"010-3112-2609","19771211",	"ADV" }); //특수문자 포함 (_)
 
 	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
 		Times((int)input_OK_List.size()).
-		WillOnce(Return(true));
+		WillRepeatedly(Return(true));
 	CommandResult CR;
 	for (vector<string> input_OK : input_OK_List) {
 		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_OK);
@@ -98,7 +100,7 @@ TEST_F(CommandProcessorFixture, ADDTest_경력개발단계) {
 
 	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
 		Times((int)input_OK_List.size()).
-		WillOnce(Return(true));
+		WillRepeatedly(Return(true));
 	CommandResult CR;
 	for (vector<string> input_OK : input_OK_List) {
 		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_OK);
@@ -142,7 +144,7 @@ TEST_F(CommandProcessorFixture, ADDTest_전화번호) {
 
 	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
 		Times((int)input_OK_List.size()).
-		WillOnce(Return(true));
+		WillRepeatedly(Return(true));
 	CommandResult CR;
 	for (vector<string> input_OK : input_OK_List) {
 		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_OK);
@@ -190,7 +192,7 @@ TEST_F(CommandProcessorFixture, ADDTest_생년월일) {
 
 	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
 		Times((int)input_OK_List.size()).
-		WillOnce(Return(true));
+		WillRepeatedly(Return(true));
 	CommandResult CR;
 	for (vector<string> input_OK : input_OK_List) {
 		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_OK);
@@ -228,7 +230,7 @@ TEST_F(CommandProcessorFixture, ADDTest_CERTI) {
 
 	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
 		Times((int)input_OK_List.size()).
-		WillOnce(Return(true));
+		WillRepeatedly(Return(true));
 	CommandResult CR;
 	for (vector<string> input_OK : input_OK_List) {
 		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_OK);
