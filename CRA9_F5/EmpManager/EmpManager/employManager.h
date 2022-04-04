@@ -25,6 +25,6 @@ private:
 
 public:
 	vector<string> runCommand(string input);
-	vector<string> cmdResultTostrList(string cmd, CommandResult cmdResult);
+	vector<string> cmdResultTostrList(enumCommandList cmd, CommandResult cmdResult);
 };
 
