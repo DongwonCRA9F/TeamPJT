@@ -31,11 +31,11 @@ vector<string> EmployManager::runCommand(string input) {
 	// Command 에 따라 cmdProcessor 호출
 	switch (cmd) {
 		case enumCommandList::ADD :
-			cmdProcessor = new CommandProcessorADD();
+			cmdProcessor = new CommandProcessorADD<DatabaseInterface>();
 			cmdResult = cmdProcessor->run(options, conditions);
 			break;
 		case enumCommandList::DEL :
-			cmdProcessor = new CommandProcessorDEL();
+			cmdProcessor = new CommandProcessorDEL<DatabaseInterface>();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
 				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
@@ -43,7 +43,7 @@ vector<string> EmployManager::runCommand(string input) {
 				ret = cmdResultTostrList(cmd, cmdResult);
 			break;
 		case enumCommandList::MOD :
-			cmdProcessor = new CommandProcessorMOD();
+			cmdProcessor = new CommandProcessorMOD<DatabaseInterface>();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
 				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());
@@ -51,7 +51,7 @@ vector<string> EmployManager::runCommand(string input) {
 				ret = cmdResultTostrList(cmd, cmdResult);
 			break;
 		case enumCommandList::SCH :
-			cmdProcessor = new CommandProcessorSCH();
+			cmdProcessor = new CommandProcessorSCH<DatabaseInterface>();
 			cmdResult = cmdProcessor->run(options, conditions);
 			if (options[0] == enumOptionList::None)
 				ret.push_back(cmdList[static_cast<int>(cmd)] + "," + cmdResult.getSimpleResults());

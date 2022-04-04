@@ -7,21 +7,18 @@ using namespace std;
 
 class CommandProcessor {
 public:
-	CommandProcessor(DatabaseInterface* DB) { DB_ = DB; };
+	CommandProcessor() {};
 	virtual CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) = 0;
 protected:
-	DatabaseInterface* DB_ = nullptr;
 	CommandResult result;
 };
 
+template <typename DatabaseInterface>
 class CommandProcessorADD :public CommandProcessor {
 public:
-	CommandProcessorADD(DatabaseInterface* DB) : CommandProcessor(DB) {};
+	CommandProcessorADD() : CommandProcessor() {};
 	CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) override {
-		if (DB_ == nullptr) {
-			cout << "ERROR: DB is not registered!" << endl;
-		}
-		if(DB_->insertItem(Employ(ResultCondition)))
+		if(DatabaseInterface::getInstance().insertItem(Employ(ResultCondition)))
 			result.count = 1;
 		else
 			result.count = 0;
@@ -29,13 +26,11 @@ public:
 	}
 };
 
+template <typename DatabaseInterface>
 class CommandProcessorMOD :public CommandProcessor {
 public:
-	CommandProcessorMOD(DatabaseInterface* DB) : CommandProcessor(DB) {};
+	CommandProcessorMOD() : CommandProcessor() {};
 	CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) override {
-		if (DB_ == nullptr) {
-			cout << "ERROR: DB is not registered!" << endl;
-		}
 #if 0
 		vector<Employ> listSearched = DB_->selectItems(enumOptionList::None, { ResultCondition[0], ResultCondition[1] });
 
@@ -56,7 +51,7 @@ public:
 			result.count++;
 		}
 #else
-		vector<Employ> listSearched = DB_->updateItems(ResultOption[1], { ResultCondition[0], ResultCondition[1] }, { ResultCondition[2], ResultCondition[3] });
+		vector<Employ> listSearched = DatabaseInterface::getInstance().updateItems(ResultOption[1], {ResultCondition[0], ResultCondition[1]}, {ResultCondition[2], ResultCondition[3]});
 		result.list.clear();
 		result.count = 0;
 		for (auto aEmploy : listSearched) {
@@ -68,14 +63,12 @@ public:
 	}
 };
 
+template <typename DatabaseInterface>
 class CommandProcessorSCH :public CommandProcessor {
 public:
-	CommandProcessorSCH(DatabaseInterface* DB) : CommandProcessor(DB) {};
+	CommandProcessorSCH() : CommandProcessor() {};
 	CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) override {
-		if (DB_ == nullptr) {
-			cout << "ERROR: DB is not registered!" << endl;
-		}
-		vector<Employ> listSearched = DB_->selectItems(ResultOption[1], { ResultCondition[0], ResultCondition[1] });
+		vector<Employ> listSearched = DatabaseInterface::getInstance().selectItems(ResultOption[1], { ResultCondition[0], ResultCondition[1] });
 		result.list.clear();
 		result.count = 0;
 		for (auto aEmploy : listSearched) {
@@ -87,14 +80,12 @@ public:
 	}
 };
 
+template <typename DatabaseInterface>
 class CommandProcessorDEL :public CommandProcessor {
 public:
-	CommandProcessorDEL(DatabaseInterface* DB) : CommandProcessor(DB) {};
+	CommandProcessorDEL() : CommandProcessor() {};
 	CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) override {
-		if (DB_ == nullptr) {
-			cout << "ERROR: DB is not registered!" << endl;
-		}
-		vector<Employ> listSearched = DB_->deleteItems(ResultOption[1], { ResultCondition[0], ResultCondition[1] });
+		vector<Employ> listSearched = DatabaseInterface::getInstance().deleteItems(ResultOption[1], { ResultCondition[0], ResultCondition[1] });
 		result.list.clear();
 		result.count = 0;
 		for (auto aEmploy : listSearched) {

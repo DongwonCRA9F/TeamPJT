@@ -6,6 +6,7 @@
 #include "CommandProcessor.h"
 #include "Employ.h"
 #include "CommandResult.h"
+#include "DatabaseInterface.h"
 
 using namespace std;
 
