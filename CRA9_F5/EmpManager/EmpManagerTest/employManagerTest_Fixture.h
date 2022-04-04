@@ -18,6 +18,8 @@ protected:
 	vector<Employ> sampleEmpList;
 	vector<string> sampleOutList;
 
+
+
 	void makeSampleEmpList();
 	void makeSampleOutList();
 };

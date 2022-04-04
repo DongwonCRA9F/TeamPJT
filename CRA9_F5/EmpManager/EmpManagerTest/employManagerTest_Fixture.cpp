@@ -5,6 +5,8 @@
 void EmployManagerFixture::SetUp() {
 	makeSampleEmpList();
 	makeSampleOutList();
+
+	empManager.cmdProcessor = new CommandProcessor();
 }
 
 void EmployManagerFixture::TearDown() {
@@ -40,6 +42,9 @@ TEST_F(EmployManagerFixture, runAddTest)
 {
 	// ADD의 경우 빈 string vector 반환
 	vector<string> emptyList;
+
+	EXPECT_CALL(*(empManager.cmdProcessor), run(_, _)).Times(1).WillOnce(Return(CommandResult(3, { Employ() })));
+
 	EXPECT_EQ(emptyList, empManager.runCommand("ADD, , , ,15123099,VXIHXOTH JHOP,CL3,010-3112-2609,19771211,ADV"));
 }
 
