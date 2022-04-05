@@ -3,13 +3,15 @@
   <ItemGroup>
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="CommandProcessorTest_Fixture.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\EmpManager\CommandParser.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
     <ClCompile Include="CommandParserTest_Fixture.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandProcessorTest_Fixture.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
+    <ClCompile Include="employManagerTest_Fixture.cpp">
       <Filter>TestCode</Filter>
     </ClCompile>
     <ClCompile Include="EmployTest.cpp">
@@ -18,42 +20,49 @@
     <ClCompile Include="DBInterfaceTest.cpp">
       <Filter>TestCode</Filter>
     </ClCompile>
-    <ClCompile Include="employManagerTest_Fixture.cpp">
-      <Filter>TestCode</Filter>
+    <ClCompile Include="..\EmpManager\CommandParser.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EmpManager\employManager.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="..\EmpManager\SampleClass.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="CommandParserTest_Fixture.h">
+      <Filter>TestCode</Filter>
     </ClInclude>
     <ClInclude Include="CommandProcessorTest_Fixture.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EmpManager\CommandParser.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandParserTest_Fixture.h">
       <Filter>TestCode</Filter>
     </ClInclude>
     <ClInclude Include="employManagerTest_Fixture.h">
       <Filter>TestCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EmpManager\CommandParser.h">
+      <Filter>Source</Filter>
+    </ClInclude>
     <ClInclude Include="MockDatabase.h">
+      <Filter>Mock</Filter>
+    </ClInclude>
+    <ClInclude Include="MockCommandProcessor.h">
+      <Filter>Mock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EmpManager\employManager.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Source">
-      <UniqueIdentifier>{7c3c644e-52c2-414a-a667-42f5535ae955}</UniqueIdentifier>
+      <UniqueIdentifier>{32c01a58-f5b4-4fae-a1e9-ed2e506840d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock">
+      <UniqueIdentifier>{ba9660e0-45df-4590-abbe-06d940c7ae51}</UniqueIdentifier>
     </Filter>
     <Filter Include="TestCode">
-      <UniqueIdentifier>{0319ed14-40bf-45e8-9e84-ac9365a1ff6b}</UniqueIdentifier>
+      <UniqueIdentifier>{3235dc12-b6a2-4af0-97ae-04b726b406e4}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

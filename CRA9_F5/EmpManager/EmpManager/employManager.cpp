@@ -2,6 +2,28 @@
 
 #include "employManager.h"
 
+
+#ifdef _UNIT_TEST
+CommandProcessor* EmployManager::getProcessor(enumCommandList cmd) {
+	return cmdProcessor;
+}
+#else
+CommandProcessor* EmployManager::getProcessor(enumCommandList cmd) {
+	switch (cmd) {
+	case enumCommandList::ADD:
+		return  new CommandProcessorADD<DatabaseInterface>();
+	case enumCommandList::DEL:
+		return  new CommandProcessorDEL<DatabaseInterface>();
+	case enumCommandList::MOD:
+		return  new CommandProcessorMOD<DatabaseInterface>();
+	case enumCommandList::SCH:
+		return new CommandProcessorSCH<DatabaseInterface>();
+	}
+}
+#endif
+
+
+
 vector<string> EmployManager::runCommand(string input) {
 	vector<string> ret;
 
@@ -27,20 +49,7 @@ vector<string> EmployManager::runCommand(string input) {
 	options = cmdParser.getOptions();
 	conditions = cmdParser.getConditions();
 
-	switch (cmd) {
-		case enumCommandList::ADD :
-			cmdProcessor = new CommandProcessorADD();
-			break;
-		case enumCommandList::DEL :
-			cmdProcessor = new CommandProcessorDEL();
-			break;
-		case enumCommandList::MOD :
-			cmdProcessor = new CommandProcessorMOD();
-			break;
-		case enumCommandList::SCH :
-			cmdProcessor = new CommandProcessorSCH();
-			break;
-	}
+	cmdProcessor = getProcessor(cmd);
 
 	cmdResult = cmdProcessor->run(options, conditions);
 
