@@ -140,6 +140,7 @@ private:
 	vector<string> Conditions;
 
 	map<enumCommandList, unique_ptr<CommandParserChecker>> ValidChecker;
+	map<string, enumCommandList> strtoEnumCmd;
 
 	const size_t CommandNum = 1;
 	const size_t OptionNum = 3;
@@ -152,6 +153,10 @@ private:
 
 public:
 	CommandParser() : Command(enumCommandList::NONE) {
+		strtoEnumCmd["ADD"] = enumCommandList::ADD;
+		strtoEnumCmd["DEL"] = enumCommandList::DEL;
+		strtoEnumCmd["SCH"] = enumCommandList::SCH;
+		strtoEnumCmd["MOD"] = enumCommandList::MOD;
 		ValidChecker[enumCommandList::ADD] = make_unique<AddCommandChecker>();
 		ValidChecker[enumCommandList::DEL] = make_unique<DelCommandChecker>();
 		ValidChecker[enumCommandList::SCH] = make_unique<SchCommandChecker>();
