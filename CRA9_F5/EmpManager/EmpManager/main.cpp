@@ -21,9 +21,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	ofstream outputFile(argv[2]);
+	EmployManager empManager;
 
 	while (getline(inputFile, inputStr)) {
-		EmployManager empManager;
 		ret = empManager.runCommand(inputStr);
 		for (auto & val : ret)
 			outputFile << val << endl;

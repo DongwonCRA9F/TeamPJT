@@ -79,7 +79,6 @@ bool CommandParser::parsing(string InputArg, const string delimiter) {
 	InitData();
 
 	vector<string> SplitedString = Split(InputArg, delimiter);
-	CommandParserChecker* ValidChecker;
 
 	try {
 		if (SplitedString.size() <= CommandNum + OptionNum) {
@@ -88,19 +87,15 @@ bool CommandParser::parsing(string InputArg, const string delimiter) {
 
 		if (SplitedString[0] == "ADD") {
 			Command = enumCommandList::ADD;
-			ValidChecker = new AddCommandChecker();
 		}
 		else if (SplitedString[0] == "MOD") {
 			Command = enumCommandList::MOD;
-			ValidChecker = new ModCommandChecker();
 		}
 		else if (SplitedString[0] == "DEL") {
 			Command = enumCommandList::DEL;
-			ValidChecker = new DelCommandChecker();
 		}
 		else if (SplitedString[0] == "SCH") {
 			Command = enumCommandList::SCH;
-			ValidChecker = new SchCommandChecker();
 		}
 		else {
 			throw invalid_Command("사용하지 않은 cmd가 들어왔습니다.");
@@ -112,8 +107,8 @@ bool CommandParser::parsing(string InputArg, const string delimiter) {
 
 		Conditions.assign(SplitedString.begin() + CommandNum + OptionNum, SplitedString.end());
 
-		ValidChecker->OptionCheck(CommandOption, Conditions[0]);
-		ValidChecker->ArgSizeCheck(Conditions);
+		ValidChecker[Command]->OptionCheck(CommandOption, Conditions[0]);
+		ValidChecker[Command]->ArgSizeCheck(Conditions);
 	}
 	catch (invalid_Command& e) {
 		throw e;
