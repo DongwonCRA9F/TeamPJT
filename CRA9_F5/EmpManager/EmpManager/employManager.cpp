@@ -22,7 +22,12 @@ CommandProcessor* EmployManager::getProcessor(enumCommandList cmd) {
 }
 #endif
 
-
+string EmployManager::empNumTostr(int employNum) {
+	string ret = to_string(employNum);
+	if (ret.size() == 6) return ("00" + ret);
+	else if (ret.size() == 7) return ("0" + ret);
+	else return ret;
+}
 
 vector<string> EmployManager::runCommand(string input) {
 	vector<string> ret;
@@ -74,7 +79,7 @@ vector<string> EmployManager::cmdResultTostrList(enumCommandList cmd, CommandRes
 
 	for (auto& employ : cmdResult.list) {
 		string str = cmdList[static_cast<int>(cmd)];
-		str += ("," + to_string(employ.getEmployeeNum()));
+		str += ("," + empNumTostr(employ.getEmployeeNum()));
 		str += ("," + employ.getName().getFullName());
 		str += ("," + clList[static_cast<int>(employ.getCl())]);
 		str += ("," + employ.getPhoneNum().getPhoneNumber());
