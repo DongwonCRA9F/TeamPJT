@@ -259,46 +259,24 @@ public:
 class CommandProcessor {
 public:
 	CommandProcessor() {
+		inputCheckerStrArr["employNum"] = inputCheckerArr[enumEmploy::EMPLOYEENUM]	= new InputCheckEmployNum();
+		inputCheckerStrArr["name"]		= inputCheckerArr[enumEmploy::NAME]			= new InputCheckName();
+		inputCheckerStrArr["cl"]		= inputCheckerArr[enumEmploy::CL]			= new InputCheckCl();
+		inputCheckerStrArr["phoneNum"]	= inputCheckerArr[enumEmploy::PHONENUM]		= new InputCheckPhoneNum();
+		inputCheckerStrArr["birthday"]	= inputCheckerArr[enumEmploy::BIRTHDAY]		= new InputCheckBirthday();
+		inputCheckerStrArr["certi"]		= inputCheckerArr[enumEmploy::CERTI]		= new InputCheckCerti();
 	};
 	virtual CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) = 0;
 protected:
+	map<enumEmploy, InputChecker*> inputCheckerArr;
+	map<string, InputChecker*> inputCheckerStrArr;
 	
 	InputChecker* getInputChecker(enumEmploy em) {
-		switch (em) {
-		case enumEmploy::EMPLOYEENUM:
-			return new InputCheckEmployNum();
-		case enumEmploy::NAME:
-			return new InputCheckName();
-		case enumEmploy::CL:
-			return new InputCheckCl();
-		case enumEmploy::PHONENUM:
-			return new InputCheckPhoneNum();
-		case enumEmploy::BIRTHDAY:
-			return new InputCheckBirthday();
-		case enumEmploy::CERTI:
-			return new InputCheckCerti();
-		}
+		return inputCheckerArr.find(em)->second;
 	}
 
 	InputChecker* getInputChecker(string emStr) {
-		if (emStr == "employNum") {
-			return new InputCheckEmployNum();
-		} else if (emStr == "name"){
-			return new InputCheckName();
-		}
-		else if (emStr == "cl") {
-			return new InputCheckCl();
-		}
-		else if (emStr == "phoneNum") {
-			return new InputCheckPhoneNum();
-		}
-		else if (emStr == "birthday") {
-			return new InputCheckBirthday();
-		}
-		else if (emStr == "certi") {
-			return new InputCheckCerti();
-		}
-		return new InputCheckEmployNum();
+		return inputCheckerStrArr.find(emStr)->second;
 	}
 
 	InputChecker* IC;
