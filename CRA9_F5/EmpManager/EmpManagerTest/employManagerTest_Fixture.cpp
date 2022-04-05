@@ -18,6 +18,13 @@ void EmployManagerFixture::makeSampleEmpList() {
 void EmployManagerFixture::makeSampleOutList() {
 }
 
+TEST_F(EmployManagerFixture, empNumTostrTest)
+{
+	EXPECT_EQ("00428511", empManager.empNumTostr(428511));
+	EXPECT_EQ("09204567", empManager.empNumTostr(9204567));
+	EXPECT_EQ("20428511", empManager.empNumTostr(20428511));
+}
+
 TEST_F(EmployManagerFixture, cmdResultTostrListTest)
 {
 	vector<string> emptyList;
