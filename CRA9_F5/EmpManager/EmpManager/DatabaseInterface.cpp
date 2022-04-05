@@ -4,14 +4,23 @@
 using namespace std;
 bool DatabaseInterface::insertItem(Employ employee)
 {
-	employDB.push_back(employee);
-	
+	vector<int> indexList = databaseSearch[static_cast<int>(enumEmploy::EMPLOYEENUM)]->search(employDB, enumOptionList::None, to_string(employee.getEmployeeNum()));
+	if (indexList.size() != 0) return false;
+
+	employDB.emplace_back(employee);
+
 	return true;
 }
 
 vector<Employ> DatabaseInterface::selectItems(enumOptionList option, DatabaseSearchItem item)
 {
-	return databaseSearch[static_cast<int>(employMap.find(item.column)->second)]->search(employDB, option, item.value);
+	vector<Employ> result;
+	vector<int> indexList = databaseSearch[static_cast<int>(employMap.find(item.column)->second)]->search(employDB, option, item.value);
+	for (auto index : indexList) {
+		result.emplace_back(employDB[index]);
+	}
+
+	return result;
 }
 
 vector<Employ> DatabaseInterface::updateItems(enumOptionList option, DatabaseSearchItem origin, DatabaseSearchItem update)
