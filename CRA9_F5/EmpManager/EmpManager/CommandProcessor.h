@@ -330,6 +330,16 @@ public:
 	CommandProcessorMOD() : CommandProcessor() {};
 	CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) override {
 		vector<Employ> listSearched = DatabaseInterface::getInstance().updateItems(ResultOption[1], {ResultCondition[0], ResultCondition[1]}, {ResultCondition[2], ResultCondition[3]});
+		try {
+			IC = getInputChecker(ResultCondition[0]);
+			IC->checkInputValidity(ResultOption[1], ResultCondition[1]);
+			IC = getInputChecker(ResultCondition[2]);
+			IC->checkInputValidity(enumOptionList::None, ResultCondition[3]);
+		}
+		catch (invalid_argument& e) {
+			cerr << "Invalid argument: " << e.what() << endl;
+			throw invalid_argument(e);
+		}
 		result.list.clear();
 		result.count = 0;
 		for (auto aEmploy : listSearched) {
@@ -372,6 +382,14 @@ public:
 	CommandProcessorDEL() : CommandProcessor() {};
 	CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) override {
 		vector<Employ> listSearched = DatabaseInterface::getInstance().deleteItems(ResultOption[1], { ResultCondition[0], ResultCondition[1] });
+		try {
+			IC = getInputChecker(ResultCondition[0]);
+			IC->checkInputValidity(ResultOption[1], ResultCondition[1]);
+		}
+		catch (invalid_argument& e) {
+			cerr << "Invalid argument: " << e.what() << endl;
+			throw invalid_argument(e);
+		}
 		result.list.clear();
 		result.count = 0;
 		for (auto aEmploy : listSearched) {
