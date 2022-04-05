@@ -31,22 +31,17 @@ public:
 private:
 	DatabaseInterface() {
 		employDB.clear();
+
 		databaseSearch[static_cast<int>(enumEmploy::EMPLOYEENUM)] = new DatabaseSearchByEmployeeNum();
 		databaseSearch[static_cast<int>(enumEmploy::NAME)] = new DatabaseSearchByName();
 		databaseSearch[static_cast<int>(enumEmploy::CL)] = new DatabaseSearchByCl();
 		databaseSearch[static_cast<int>(enumEmploy::PHONENUM)] = new DatabaseSearchByPhone();
 		databaseSearch[static_cast<int>(enumEmploy::BIRTHDAY)] = new DatabaseSearchByBirthday();
 		databaseSearch[static_cast<int>(enumEmploy::CERTI)] = new DatabaseSearchByCerti();
-
-		databaseUpdate[static_cast<int>(enumEmploy::EMPLOYEENUM)] = new DatabaseUpdateByEmployeeNum();
-		databaseUpdate[static_cast<int>(enumEmploy::NAME)] = new DatabaseUpdateByName();
-		databaseUpdate[static_cast<int>(enumEmploy::CL)] = new DatabaseUpdateByCl();
-		databaseUpdate[static_cast<int>(enumEmploy::PHONENUM)] = new DatabaseUpdateByPhone();
-		databaseUpdate[static_cast<int>(enumEmploy::BIRTHDAY)] = new DatabaseUpdateByBirthday();
-		databaseUpdate[static_cast<int>(enumEmploy::CERTI)] = new DatabaseUpdateByCerti();
 	}
 
-	DatabaseSearch* databaseSearch[static_cast<int>(enumEmploy::Employ_MAX)];
-	DatabaseUpdate* databaseUpdate[static_cast<int>(enumEmploy::Employ_MAX)];
 	vector<Employ> employDB;
+	DatabaseSearch* databaseSearch[static_cast<int>(enumEmploy::Employ_MAX)];
+	DatabaseUpdate databaseUpdate;
+
 };

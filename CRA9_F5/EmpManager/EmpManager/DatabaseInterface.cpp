@@ -25,7 +25,17 @@ vector<Employ> DatabaseInterface::selectItems(enumOptionList option, DatabaseSea
 
 vector<Employ> DatabaseInterface::updateItems(enumOptionList option, DatabaseSearchItem origin, DatabaseSearchItem update)
 {
-	return databaseUpdate[static_cast<int>(employMap.find(origin.column)->second)]->update(&employDB, option, origin.value, {update.column, update.value});
+	vector<Employ> result;
+	vector<int> indexList = databaseSearch[static_cast<int>(employMap.find(origin.column)->second)]->search(employDB, option, origin.value);
+	for (auto index : indexList) {
+		result.emplace_back(employDB[index]);
+	}
+
+	for (auto index : indexList) {
+		employDB[index] = databaseUpdate.updateItem(employDB[index], { update.column, update.value });
+	}
+
+	return result;
 }
 
 vector<Employ> DatabaseInterface::deleteItems(enumOptionList option, DatabaseSearchItem item)
