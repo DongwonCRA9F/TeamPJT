@@ -149,7 +149,7 @@
     <ClInclude Include="CommandResult.h" />
     <ClInclude Include="DatabaseInterface.h" />
     <ClInclude Include="CommandParser.h" />
-    <ClInclude Include="DatabaseSearch.h" />
+    <ClInclude Include="DatabaseSearchDbIndex.h" />
     <ClInclude Include="DatabaseUpdate.h" />
     <ClInclude Include="Employ.h" />
     <ClInclude Include="employManager.h" />

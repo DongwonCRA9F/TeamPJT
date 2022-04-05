@@ -43,18 +43,6 @@ namespace
 		EXPECT_EQ(db.getCurRecordsCount(), 5);
 	}
 
-	TEST_F(DBInterfaceTest, InsertTestPositive_CheckManyRecords)
-	{
-		int recordsCount = 200000;
-		for (int i = 0; i < recordsCount; i++)
-		{
-			Employ em = Employ(20000000 + i, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
-			EXPECT_TRUE(db.insertItem(em));
-		}
-
-		EXPECT_EQ(db.getCurRecordsCount(), recordsCount);
-	}
-
 	TEST_F(DBInterfaceTest, SelectTestPositive_BasicByEmployeeNum)
 	{
 		Employ em = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
@@ -407,7 +395,7 @@ namespace
 		EXPECT_EQ(em5, emList2[2]);
 	}
 
-	TEST_F(DBInterfaceTest, UpdatePositive_BasicByPhoneNumChangePhoneNum)
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByEmployeeNumChangeEmployeeNum)
 	{
 		Employ emOrigin = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
 		Employ emUpdate = Employ(19551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
@@ -425,5 +413,195 @@ namespace
 		vector<Employ> emListUpdate = db.selectItems(enumOptionList::None, { "employeeNum", "19551235" });
 
 		EXPECT_EQ(emUpdate, emListUpdate[0]);
+	}
+
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByEmployeeNumChangeName)
+	{
+		Employ emOrigin = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+		Employ emUpdate = Employ(20551235, Name("SANGKAP KIM"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+
+		EXPECT_TRUE(db.insertItem(emOrigin));
+
+		vector<Employ> emListOrigin = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emOrigin, emListOrigin[0]);
+
+		vector<Employ> emListPrev = db.updateItems(enumOptionList::None, { "employeeNum", "20551235" }, { "name", "SANGKAP KIM" });
+
+		EXPECT_EQ(emOrigin, emListPrev[0]);
+
+		vector<Employ> emListUpdate = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emUpdate, emListUpdate[0]);
+	}
+
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByEmployeeNumChangeCl)
+	{
+		Employ emOrigin = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+		Employ emUpdate = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL2, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+
+		EXPECT_TRUE(db.insertItem(emOrigin));
+
+		vector<Employ> emListOrigin = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emOrigin, emListOrigin[0]);
+
+		vector<Employ> emListPrev = db.updateItems(enumOptionList::None, { "employeeNum", "20551235" }, { "cl", "CL2" });
+
+		EXPECT_EQ(emOrigin, emListPrev[0]);
+
+		vector<Employ> emListUpdate = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emUpdate, emListUpdate[0]);
+	}
+
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByEmployeeNumChangePhoneNumber)
+	{
+		Employ emOrigin = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+		Employ emUpdate = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-8888"), Birthday("19991212"), enumCerti::PRO);
+
+		EXPECT_TRUE(db.insertItem(emOrigin));
+
+		vector<Employ> emListOrigin = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emOrigin, emListOrigin[0]);
+
+		vector<Employ> emListPrev = db.updateItems(enumOptionList::None, { "employeeNum", "20551235" }, { "phoneNum", "010-9999-8888" });
+
+		EXPECT_EQ(emOrigin, emListPrev[0]);
+
+		vector<Employ> emListUpdate = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emUpdate, emListUpdate[0]);
+	}
+
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByEmployeeNumChangeBirthday)
+	{
+		Employ emOrigin = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+		Employ emUpdate = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991210"), enumCerti::PRO);
+
+		EXPECT_TRUE(db.insertItem(emOrigin));
+
+		vector<Employ> emListOrigin = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emOrigin, emListOrigin[0]);
+
+		vector<Employ> emListPrev = db.updateItems(enumOptionList::None, { "employeeNum", "20551235" }, { "birthday", "19991210" });
+
+		EXPECT_EQ(emOrigin, emListPrev[0]);
+
+		vector<Employ> emListUpdate = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emUpdate, emListUpdate[0]);
+	}
+
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByEmployeeNumChangeCerti)
+	{
+		Employ emOrigin = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+		Employ emUpdate = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::EX);
+
+		EXPECT_TRUE(db.insertItem(emOrigin));
+
+		vector<Employ> emListOrigin = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emOrigin, emListOrigin[0]);
+
+		vector<Employ> emListPrev = db.updateItems(enumOptionList::None, { "employeeNum", "20551235" }, { "certi", "EX" });
+
+		EXPECT_EQ(emOrigin, emListPrev[0]);
+
+		vector<Employ> emListUpdate = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+
+		EXPECT_EQ(emUpdate, emListUpdate[0]);
+	}
+
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByEmployeeNumChangeCertiMulti)
+	{
+		Employ em0 = Employ(20551234, Name("SANGKAP LEE1"), enumCL::CL1, PhoneNumber("010-9999-9991"), Birthday("19991212"), enumCerti::ADV);
+		Employ em1 = Employ(20551235, Name("SANGKAP LEE1"), enumCL::CL2, PhoneNumber("010-9999-9992"), Birthday("19991213"), enumCerti::PRO);
+		Employ em2 = Employ(20551236, Name("SANGKAP LEE1"), enumCL::CL2, PhoneNumber("010-9999-9992"), Birthday("19991213"), enumCerti::PRO);
+		Employ em3 = Employ(20551237, Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em4 = Employ(20551238, Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em5 = Employ(20551239, Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em6 = Employ(20551240, Name("SANGKAP LEE2"), enumCL::CL4, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::ADV);
+
+		EXPECT_TRUE(db.insertItem(em0));
+		EXPECT_TRUE(db.insertItem(em1));
+		EXPECT_TRUE(db.insertItem(em2));
+		EXPECT_TRUE(db.insertItem(em3));
+		EXPECT_TRUE(db.insertItem(em4));
+		EXPECT_TRUE(db.insertItem(em5));
+		EXPECT_TRUE(db.insertItem(em6));
+
+
+		vector<Employ> emListUpdate = db.updateItems(enumOptionList::None, { "certi", "EX" }, { "certi", "PRO" });
+
+		vector<Employ> emListSel1 = db.selectItems(enumOptionList::None, { "certi", "PRO" });
+
+		EXPECT_EQ(emListSel1.size(), 5);
+
+		vector<Employ> emListSel0 = db.selectItems(enumOptionList::None, { "certi", "EX" });
+
+		EXPECT_EQ(emListSel0.size(), 0);
+	}
+
+	TEST_F(DBInterfaceTest, DeletePositive_BasicByEmployeeNum)
+	{
+		Employ em0 = Employ(20551234, Name("SANGKAP LEE1"), enumCL::CL1, PhoneNumber("010-9999-9991"), Birthday("19991212"), enumCerti::ADV);
+		Employ em1 = Employ(20551235, Name("SANGKAP LEE1"), enumCL::CL2, PhoneNumber("010-9999-9992"), Birthday("19991213"), enumCerti::PRO);
+		Employ em2 = Employ(20551236, Name("SANGKAP LEE1"), enumCL::CL2, PhoneNumber("010-9999-9992"), Birthday("19991213"), enumCerti::PRO);
+		Employ em3 = Employ(20551237, Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em4 = Employ(20551238, Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em5 = Employ(20551239, Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em6 = Employ(20551240, Name("SANGKAP LEE2"), enumCL::CL4, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::ADV);
+
+		EXPECT_TRUE(db.insertItem(em0));
+		EXPECT_TRUE(db.insertItem(em1));
+		EXPECT_TRUE(db.insertItem(em2));
+		EXPECT_TRUE(db.insertItem(em3));
+		EXPECT_TRUE(db.insertItem(em4));
+		EXPECT_TRUE(db.insertItem(em5));
+		EXPECT_TRUE(db.insertItem(em6));
+
+		EXPECT_EQ(db.getCurRecordsCount(), 7);
+		vector<Employ> emDel = db.deleteItems(enumOptionList::None, { "employeeNum", "20551235" });
+		EXPECT_EQ(em1, emDel[0]);
+		EXPECT_EQ(db.getCurRecordsCount(), 6);
+
+		vector<Employ> emSel = db.selectItems(enumOptionList::None, { "employeeNum", "20551235" });
+		EXPECT_EQ(emSel.size(), 0);
+	}
+
+	TEST_F(DBInterfaceTest, DeletePositive_BasicByName)
+	{
+		Employ em0 = Employ(20551234, Name("SANGKAP LEE1"), enumCL::CL1, PhoneNumber("010-9999-9991"), Birthday("19991212"), enumCerti::ADV);
+		Employ em1 = Employ(20551235, Name("SANGKAP LEE1"), enumCL::CL2, PhoneNumber("010-9999-9992"), Birthday("19991213"), enumCerti::PRO);
+		Employ em2 = Employ(20551236, Name("SANGKAP LEE1"), enumCL::CL2, PhoneNumber("010-9999-9992"), Birthday("19991213"), enumCerti::PRO);
+		Employ em3 = Employ(20551237, Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em4 = Employ(20551238, Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em5 = Employ(20551239, Name("SANGKAP LEE3"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em6 = Employ(20551240, Name("SANGKAP LEE3"), enumCL::CL4, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::ADV);
+
+		EXPECT_TRUE(db.insertItem(em0));
+		EXPECT_TRUE(db.insertItem(em1));
+		EXPECT_TRUE(db.insertItem(em2));
+		EXPECT_TRUE(db.insertItem(em3));
+		EXPECT_TRUE(db.insertItem(em4));
+		EXPECT_TRUE(db.insertItem(em5));
+		EXPECT_TRUE(db.insertItem(em6));
+
+		EXPECT_EQ(db.getCurRecordsCount(), 7);
+		vector<Employ> emDel = db.deleteItems(enumOptionList::None, { "name", "SANGKAP LEE2" });
+		EXPECT_EQ(em3, emDel[0]);
+		EXPECT_EQ(db.getCurRecordsCount(), 5);
+
+		vector<Employ> emSel = db.selectItems(enumOptionList::None, { "name", "SANGKAP LEE2" });
+		EXPECT_EQ(emSel.size(), 0);
+
+		vector<Employ> emSel1 = db.selectItems(enumOptionList::None, { "name", "SANGKAP LEE1" });
+		EXPECT_EQ(emSel1.size(), 3);
+
+		vector<Employ> emSel2 = db.selectItems(enumOptionList::None, { "name", "SANGKAP LEE3" });
+		EXPECT_EQ(emSel2.size(), 2);
 	}
 }
