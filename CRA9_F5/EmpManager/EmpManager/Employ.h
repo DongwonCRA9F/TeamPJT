@@ -170,6 +170,7 @@ enum class enumEmploy {
 };
 static const unordered_map<string, enumEmploy> employMap
 = { {"employeeNum", enumEmploy::EMPLOYEENUM}, {"name", enumEmploy::NAME}, {"cl", enumEmploy::CL}, {"phoneNum", enumEmploy::PHONENUM} , {"birthday", enumEmploy::BIRTHDAY} , {"certi", enumEmploy::CERTI} };
+static const string strEmploy[static_cast<int>(enumEmploy::Employ_MAX)] = { "employeeNum", "name", "cl", "phoneNum", "birthday", "certi" };
 
 class Employ {
 public:
