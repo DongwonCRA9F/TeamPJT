@@ -35,9 +35,22 @@ protected:
 			}			
 		}
 		if (count_space != 1) return false;
-		if (str.substr(0, 1) == " " || str.substr(str.length() - 1, 1) == " ") return false;
+		if (str.substr(0, 1) == " " || str.substr(str.length() - 1, 1) == " ") {
+			return false;
+		}
 		return true;
 	}
+	bool IsValidNameFirstLast(string str) {
+		int count_space = 0;
+		if (str.length() < 1 || str.length() > 13) return false;
+		for (auto c : str) {
+			if (!isalpha(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	bool IsValidCl(string str) {
 		if (str.length() != 3) return false;
 		if (str.substr(0, 2) != "CL") return false;
@@ -70,6 +83,16 @@ protected:
 
 		return true;
 	}
+
+	bool IsValidPhoneNumMiddleLast(string str) {
+		if (str.length() != 4) return false;
+		for (auto c : str) {
+			if (!isdigit(c)) return false;
+		}
+
+		return true;
+ 	}
+
 	bool IsValidBirthday(string str) {
 		if (str.length() != 8) return false;
 		for (auto c : str) {
@@ -84,6 +107,37 @@ protected:
 
 		return true;
 	}
+	bool IsValidBirthdayYear(string str) {
+		if (str.length() != 4) return false;
+		for (auto c : str) {
+			if (!isdigit(c)) return false;
+		}
+		int year = stoi(str);
+		if (year < 1900 || year > 2022) return false;
+		
+		return true;
+	}
+	bool IsValidBirthdayMonth(string str) {
+		if (str.length() != 2) return false;
+		for (auto c : str) {
+			if (!isdigit(c)) return false;
+		}
+		int month = stoi(str);
+		if (month < 1 || month > 12) return false;
+
+		return true;
+	}
+	bool IsValidBirthdayDay(string str) {
+		if (str.length() != 2) return false;
+		for (auto c : str) {
+			if (!isdigit(c)) return false;
+		}
+		int day = stoi(str);
+		if (day < 1 || day > 31) return false;
+
+		return true;
+	}
+
 	bool IsValidCerti(string str) {
 		if (str.length() < 2 || str.length() > 3) return false;
 		if (str!="ADV" && str != "PRO" && str != "EX") return false;
@@ -166,6 +220,58 @@ class CommandProcessorSCH :public CommandProcessor {
 public:
 	CommandProcessorSCH() : CommandProcessor() {};
 	CommandResult run(vector<enumOptionList> ResultOption, vector<string> ResultCondition) override {
+		if(ResultCondition[0] == "employNum" && !IsValidEmployNum(ResultCondition[1])) {
+			throw invalid_argument("[CommandProcessorSCH] invalid_argument. (EMPLOYEENUM)\n");
+		}
+		if (ResultCondition[0] == "name") {
+			if (ResultOption[1] == enumOptionList::None) {
+				if (!IsValidName(ResultCondition[1]))
+					throw invalid_argument("[CommandProcessorSCH] invalid_argument. (NAME)\n");
+			}
+			else {
+				if (!IsValidNameFirstLast(ResultCondition[1]))
+					throw invalid_argument("[CommandProcessorSCH] invalid_argument. (NAME)\n");
+			}
+		}
+		if (ResultCondition[0] == "cl" && !IsValidCl(ResultCondition[1])) {
+			throw invalid_argument("[CommandProcessorSCH] invalid_argument. (CL)\n");
+		}
+		if (ResultCondition[0] == "phoneNum") {
+			if (ResultOption[1] == enumOptionList::None) {
+				if (!IsValidPhoneNum(ResultCondition[1]))
+					throw invalid_argument("[CommandProcessorSCH] invalid_argument. (PHONENUM)\n");
+			}
+			else {
+				if (!IsValidPhoneNumMiddleLast(ResultCondition[1]))
+					throw invalid_argument("[CommandProcessorSCH] invalid_argument. (PHONENUM)\n");
+			}
+		}
+		if (ResultCondition[0] == "birthday") {
+			if (ResultOption[1] == enumOptionList::None) {
+				if (!IsValidBirthday(ResultCondition[1]))
+					throw invalid_argument("[CommandProcessorSCH] invalid_argument. (BIRTHDAY)\n");
+			}
+			else if(ResultOption[1] == enumOptionList::FindByYear_Birthday) {
+				if (!IsValidBirthdayYear(ResultCondition[1]))
+					throw invalid_argument("[CommandProcessorSCH] invalid_argument. (BIRTHDAY)\n");
+			}
+			else if (ResultOption[1] == enumOptionList::FindByMonth_Birthday) {
+				if (!IsValidBirthdayMonth(ResultCondition[1]))
+					throw invalid_argument("[CommandProcessorSCH] invalid_argument. (BIRTHDAY)\n");
+
+			} 
+			else if (ResultOption[1] == enumOptionList::FindByDay_Birthday) {
+				if (!IsValidBirthdayDay(ResultCondition[1]))
+					throw invalid_argument("[CommandProcessorSCH] invalid_argument. (BIRTHDAY)\n");
+			}
+			else {
+				throw invalid_argument("[CommandProcessorSCH] invalid_argument. (BIRTHDAY)\n");
+			}
+		}
+		if (ResultCondition[0] == "certi" && !IsValidCerti(ResultCondition[1])) {
+			throw invalid_argument("[CommandProcessorSCH] invalid_argument. (CERTI)\n");
+		}
+
 		vector<Employ> listSearched = DatabaseInterface::getInstance().selectItems(ResultOption[1], { ResultCondition[0], ResultCondition[1] });
 		result.list.clear();
 		result.count = 0;
