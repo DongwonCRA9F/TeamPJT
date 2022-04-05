@@ -100,13 +100,13 @@ public:
 				if (db[i].getBirthday().getBirthday() != value) { continue; }
 			}
 			else if (option == enumOptionList::FindByYear_Birthday) {
-				if (to_string(db[i].getBirthday().getYear()) != value) { continue; }
+				if (db[i].getBirthday().getYear() != stoi(value)) { continue; }
 			}
 			else if (option == enumOptionList::FindByMonth_Birthday) {
-				if (to_string(db[i].getBirthday().getMonth()) != value) { continue; }
+				if (db[i].getBirthday().getMonth() != stoi(value)) { continue; }
 			}
 			else if (option == enumOptionList::FindByDay_Birthday) {
-				if (to_string(db[i].getBirthday().getDay()) != value) { continue; }
+				if (db[i].getBirthday().getDay() != stoi(value)) { continue; }
 			}
 
 			employeeIndexList.emplace_back(i);
