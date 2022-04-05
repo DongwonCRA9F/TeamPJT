@@ -127,9 +127,7 @@ TEST_F(CommandProcessorFixture, ADDTest_전화번호) {
 	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"010-31?2-2609",	"19771211",	"ADV" });//숫자 아님
 	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-!609",	"19771211",	"ADV" });//숫자 아님
 	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"O10-3112-2609",	"19771211",	"ADV" });//숫자 0 대신 다른 문자: 영어 O
-	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"ㅇ10-3112-2609",	"19771211",	"ADV" });//숫자 0 대신 다른 문자: 한글 ㅇ
 	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-26O9",	"19771211",	"ADV" });//숫자 0 대신 다른 문자: 영어 O
-	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-26ㅇ9",	"19771211",	"ADV" });//숫자 0 대신 다른 문자: 한글 ㅇ
 	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"010=3112-2609",	"19771211",	"ADV" });//-대신 다른 문자
 	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112_2609",	"19771211",	"ADV" });//-대신 다른 문자
 	input_NG_List.push_back(	{ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609-1234","19771211","ADV" });//형식이상 : - 3개
@@ -171,17 +169,12 @@ TEST_F(CommandProcessorFixture, ADDTest_생년월일) {
 	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19771231",		"ADV" });
 	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-311-2609",		"771211",		"ADV" });//형식 이상 (yymmdd)
 	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-311-2609",		"00771211",		"ADV" });//형식 이상 (00yymmdd)
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19770231",		"ADV" });//없는 날짜
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19770431",		"ADV" });//없는 날짜
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19770631",		"ADV" });//없는 날짜
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19770931",		"ADV" });//없는 날짜
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19771131",		"ADV" });//없는 날짜
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"1977aa11",		"ADV" });//NG
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"197712BB",		"ADV" });//NG
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19??1211",		"ADV" });//NG
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"1977-12-11",	"ADV" });//NG
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"1977/12/11",	"ADV" });//NG
-	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"12111977",		"ADV" });//NG (DDMMYYYY)
+	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"1977aa11",		"ADV" });//NG
+	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"197712BB",		"ADV" });//NG
+	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19??1211",		"ADV" });//NG
+	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"1977-12-11",	"ADV" });//NG
+	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"1977/12/11",	"ADV" });//NG
+	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"12111977",		"ADV" });//NG (DDMMYYYY)
 
 
 	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).

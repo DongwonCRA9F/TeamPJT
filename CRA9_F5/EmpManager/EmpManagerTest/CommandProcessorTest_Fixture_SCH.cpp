@@ -21,7 +21,7 @@ vector<vector<string>>* makeInputVector() {
 	input_ADD_List->push_back({ "85125741", "FBAH RTIJ", "CL1", "010-8900-1478", "19780228", "ADV" });
 	input_ADD_List->push_back({ "08117441", "BMU MPOSXU", "CL3", "010-2703-3153", "20010215", "ADV" });
 	input_ADD_List->push_back({ "10127115", "KBU MHU", "CL3", "010-3284-4054", "19660814", "ADV" });
-	input_ADD_List->push_back({ "12117017", "LFIS JJIVL", "CL1", "010-7914-4067", "20120812", "PRO " });
+	input_ADD_List->push_back({ "12117017", "LFIS JJIVL", "CL1", "010-7914-4067", "20120812", "PRO" });
 	input_ADD_List->push_back({ "11125777", "TKOQKIS HC", "CL1", "010-6734-2289", "19991001", "PRO" });
 	input_ADD_List->push_back({ "11109136", "QKAHCEX LTODDO", "CL4", "010-2627-8566", "19640130", "PRO" });
 	input_ADD_List->push_back({ "05101762", "VCUHLE HMU", "CL4", "010-3988-9289", "20030819", "PRO" });
@@ -130,7 +130,7 @@ TEST_F(CommandProcessorFixture, SCHTest_성명_Option1) {
 	input_ADD_List->push_back({ "18123557", "WN XV", "CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "78123558", "WN XV", "CL3", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "88123559", "WN XV", "CL4", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
-	input_ADD_List->push_back({ "98123559", "WN XVV" "CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
+	input_ADD_List->push_back({ "98123559", "WN XVV","CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "09123559", "WNN XV","CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "21123559", "WN XV", "CL2", "010-7986-5047", "20100614", "EX" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "20123559", "WN XV", "CL2", "010-7986-5047", "20100614", "ADV" }); //테스트를 위해 추가함.
@@ -169,7 +169,7 @@ TEST_F(CommandProcessorFixture, SCHTest_성명_Option2_FirstName) {
 	input_ADD_List->push_back({ "18123557", "WN XV", "CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "78123558", "WN XV", "CL3", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "88123559", "WN XV", "CL4", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
-	input_ADD_List->push_back({ "98123559", "WN XVV" "CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
+	input_ADD_List->push_back({ "98123559", "WN XVV","CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "09123559", "WNN XV","CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "21123559", "WN XV", "CL2", "010-7986-5047", "20100614", "EX" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "20123559", "WN XV", "CL2", "010-7986-5047", "20100614", "ADV" }); //테스트를 위해 추가함.
@@ -241,7 +241,7 @@ TEST_F(CommandProcessorFixture, SCHTest_성명_Option2_LastName) {
 	input_ADD_List->push_back({ "18123557", "WN XV", "CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "78123558", "WN XV", "CL3", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "88123559", "WN XV", "CL4", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
-	input_ADD_List->push_back({ "98123559", "WN XVV" "CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
+	input_ADD_List->push_back({ "98123559", "WN XVV", "CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "09123559", "WNN XV","CL2", "010-7986-5047", "20100614", "PRO" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "21123559", "WN XV", "CL2", "010-7986-5047", "20100614", "EX" }); //테스트를 위해 추가함.
 	input_ADD_List->push_back({ "20123559", "WN XV", "CL2", "010-7986-5047", "20100614", "ADV" }); //테스트를 위해 추가함.
@@ -348,7 +348,7 @@ TEST_F(CommandProcessorFixture, SCHTest_경력개발단계_noOption) {
 }
 TEST_F(CommandProcessorFixture, SCHTest_경력개발단계_Option1) {
 	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::RecordPrint, enumOptionList::None, enumOptionList::None };
-	const string SEARCH_COLUMN = "name";
+	const string SEARCH_COLUMN = "cl";
 	const string SEARCH_STR_CL1 = "CL1";
 	const string SEARCH_STR_CL2 = "CL2";
 	const string SEARCH_STR_CL3 = "CL3";
@@ -495,9 +495,7 @@ TEST_F(CommandProcessorFixture, SCHTest_전화번호_noOption) {
 	input_NG_List.push_back({ SEARCH_COLUMN, "010-32?1-1698" });//숫자 아님
 	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-!698" });//숫자 아님
 	input_NG_List.push_back({ SEARCH_COLUMN, "O10-3231-1698" });//숫자 0 대신 다른 문자: 영어 O
-	input_NG_List.push_back({ SEARCH_COLUMN, "ㅇ10-3231-1698" });//숫자 0 대신 다른 문자: 한글 ㅇ
 	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-16O8" });//숫자 0 대신 다른 문자: 영어 O
-	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-16ㅇ8" });//숫자 0 대신 다른 문자: 한글 ㅇ
 	input_NG_List.push_back({ SEARCH_COLUMN, "010=3231-1698" });//-대신 다른 문자
 	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231_1698" });//-대신 다른 문자
 	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-1698-1234" });//형식이상 : - 3개
@@ -779,11 +777,7 @@ TEST_F(CommandProcessorFixture, SCHTest_생년월일_noOption) {
 	vector<vector<string>> input_NG_List;
 	input_NG_List.push_back({ SEARCH_COLUMN, "090201" });//형식 이상 (yymmdd)
 	input_NG_List.push_back({ SEARCH_COLUMN, "00090231" });//형식 이상 (00yymmdd)
-	input_NG_List.push_back({ SEARCH_COLUMN, "20090431" });//없는 날짜
-	input_NG_List.push_back({ SEARCH_COLUMN, "20090631" });//없는 날짜
-	input_NG_List.push_back({ SEARCH_COLUMN, "20090931" });//없는 날짜
-	input_NG_List.push_back({ SEARCH_COLUMN, "20091131" });//없는 날짜
-	input_NG_List.push_back({ SEARCH_COLUMN, "2009aa11" });//없는 날짜
+	input_NG_List.push_back({ SEARCH_COLUMN, "2009aa11" });//NG
 	input_NG_List.push_back({ SEARCH_COLUMN, "200912BB" });//NG
 	input_NG_List.push_back({ SEARCH_COLUMN, "20??0201" });//NG"19??1211",	
 	input_NG_List.push_back({ SEARCH_COLUMN, "2009-02-01" });//NG"1977-12-11"
