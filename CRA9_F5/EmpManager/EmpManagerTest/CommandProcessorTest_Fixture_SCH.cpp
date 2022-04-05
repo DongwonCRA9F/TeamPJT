@@ -214,6 +214,7 @@ TEST_F(CommandProcessorFixture, SCHTest_성명_Option2_FirstName) {
 
 	//SCHTest_NG
 	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, "" });
 	input_NG_List.push_back({ SEARCH_COLUMN, "WNNNNXVVVVVVVVVV" });//15자 초과(5 + 11 = 16)
 	input_NG_List.push_back({ SEARCH_COLUMN, "W N" });//띄어쓰기
 	input_NG_List.push_back({ SEARCH_COLUMN, "W N N" });//띄어쓰기 2개
@@ -285,6 +286,7 @@ TEST_F(CommandProcessorFixture, SCHTest_성명_Option2_LastName) {
 
 	//SCHTest_NG
 	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, "" });
 	input_NG_List.push_back({ SEARCH_COLUMN, "WNNNNXVVVVVVVVVV" });//15자 초과(5 + 11 = 16)
 	input_NG_List.push_back({ SEARCH_COLUMN, "W N" });//띄어쓰기
 	input_NG_List.push_back({ SEARCH_COLUMN, "W N N" });//띄어쓰기 2개
@@ -417,8 +419,674 @@ TEST_F(CommandProcessorFixture, SCHTest_경력개발단계_Option1) {
 	CR_exp = CommandResult((int)list_result.size(), list_result);
 	EXPECT_EQ(CR, CR_exp);
 }
-//전화번호 테스트
+TEST_F(CommandProcessorFixture, SCHTest_전화번호_noOption) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::None, enumOptionList::None, enumOptionList::None };
+	const string SEARCH_COLUMN = "phoneNum";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "91130827", "RPO JKK",		"CL4", "010-0231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "92130827", "RPO JKKK",		"CL4", "010-3231-0698", "20090201", "PRO" });
+	input_ADD_List->push_back({ "93130827", "RPO JKKKK",	"CL4", "010-3231-1698", "20090201", "EX" });
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times((int)input_ADD_List->size()).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run(INPUT_OPTION, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK1
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+	const string SEARCH_STR_OK1 = "010-3231-1698";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK1)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK1 });
+	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_OK2
+	list_result.clear();
+	const string SEARCH_STR_OK2 = "010-0231-1698"; //middle이 0으로 시작
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK2)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK2 });
+	CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_OK3
+	list_result.clear();
+	const string SEARCH_STR_OK3 = "010-3231-0698"; //last가 0으로 시작
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK3)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK3 });
+	CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_NG
+	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-323-1698" });//형식 이상 (middle 3자리)
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-169" });//형식 이상 (last 3자리)
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-32312-1698" });//형식 이상 (middle 5자리)
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-16989" });//형식 이상 (last 5자리)
+	input_NG_List.push_back({ SEARCH_COLUMN, "011-3231-1698" });//010 아님
+	input_NG_List.push_back({ SEARCH_COLUMN, "017-3231-1698" });//010 아님
+	input_NG_List.push_back({ SEARCH_COLUMN, "810-3231-1698" });//010 아님
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-32A1-1698" });//숫자 아님
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-1B98" });//숫자 아님
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-32?1-1698" });//숫자 아님
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-!698" });//숫자 아님
+	input_NG_List.push_back({ SEARCH_COLUMN, "O10-3231-1698" });//숫자 0 대신 다른 문자: 영어 O
+	input_NG_List.push_back({ SEARCH_COLUMN, "ㅇ10-3231-1698" });//숫자 0 대신 다른 문자: 한글 ㅇ
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-16O8" });//숫자 0 대신 다른 문자: 영어 O
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-16ㅇ8" });//숫자 0 대신 다른 문자: 한글 ㅇ
+	input_NG_List.push_back({ SEARCH_COLUMN, "010=3231-1698" });//-대신 다른 문자
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231_1698" });//-대신 다른 문자
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231-1698-1234" });//형식이상 : - 3개
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-3231" });//형식이상 : - 1개
+	input_NG_List.push_back({ SEARCH_COLUMN, "010-32311698" });//형식이상 : - 1개
+	input_NG_List.push_back({ SEARCH_COLUMN, "01032311698" });//형식이상 : - 0개
+
+	for (vector < string> input_NG : input_NG_List) {
+		EXPECT_THROW(cmdSCH.run(INPUT_OPTION, input_NG), invalid_argument);
+	}
+}
+TEST_F(CommandProcessorFixture, SCHTest_전화번호_Option1) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::RecordPrint, enumOptionList::None, enumOptionList::None };
+	const string SEARCH_COLUMN = "phoneNum";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "13130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "15130827", "RPO JKL",		"CL4", "010-3231-1698", "20090202", "PRO" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "16130827", "RPO JKLM",		"CL4", "010-3231-1698", "20090203", "EX"  }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "17130827", "RPO JKLMN",	"CL4", "010-3231-1698", "20090204", "ADV" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "18130827", "RPO JKLMNO",	"CL4", "010-3231-1698", "20090205", "PRO" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "71130827", "RPOP JK",		"CL3", "010-3231-1234", "20090206", "EX"  }); //테스트를 위해 전화번호(middle)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "72130827", "RPOPQ JK",		"CL3", "010-3231-2345", "20090207", "ADV" }); //테스트를 위해 전화번호(middle)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "73130827", "RPOPQR JK",	"CL3", "010-3231-3456", "20090207", "PRO" }); //테스트를 위해 전화번호(middle)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "74130827", "RPOPQRS JK",	"CL2", "010-1234-1698", "20090207", "EX" });  //테스트를 위해 전화번호(last)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "75130827", "RPOPQRST JK",	"CL2", "010-2345-1698", "20090207", "ADV" }); //테스트를 위해 전화번호(last)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "76130827", "RPOPQRSTU JK",	"CL2", "010-3456-1698", "20090207", "PRO" }); //테스트를 위해 전화번호(last)가 같은 employ 추가함.
+	
+
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times((int)input_ADD_List->size()).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run(INPUT_OPTION, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+	const string SEARCH_STR_OK = "010-3231-1698";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK });
+	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+}
+TEST_F(CommandProcessorFixture, SCHTest_전화번호_Option2_MiddleNum) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::RecordPrint, enumOptionList::FindByMiddleNum_PhoneNum, enumOptionList::None };
+	const string SEARCH_COLUMN = "phoneNum";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "14130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "15130827", "RPO JKL",		"CL4", "010-3231-1698", "20090202", "PRO" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "16130827", "RPO JKLM",		"CL4", "010-3231-1698", "20090203", "EX" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "17130827", "RPO JKLMN",	"CL4", "010-3231-1698", "20090204", "ADV" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "18130827", "RPO JKLMNO",	"CL4", "010-3231-1698", "20090205", "PRO" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "71130827", "RPOP JK",		"CL3", "010-3231-1234", "20090206", "EX" }); //테스트를 위해 전화번호(middle)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "72130827", "RPOPQ JK",		"CL3", "010-3231-1234", "20090207", "ADV" }); //테스트를 위해 전화번호(middle)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "73130827", "RPOPQR JK",	"CL2", "010-1234-1698", "20090207", "EX" });  //테스트를 위해 전화번호(last)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "74130827", "RPOPQRS JK",	"CL2", "010-1234-1698", "20090207", "ADV" }); //테스트를 위해 전화번호(last)가 같은 employ 추가함.
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times((int)input_ADD_List->size()).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK1_결과 5개미만
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+
+	const string SEARCH_STR_OK1 = "1234";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK1)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK1 });
+	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_OK2_결과 5개초과
+	list_result.clear();
+	const string SEARCH_STR_OK2 = "3231";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK2)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK2 });
+	CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_NG
+	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, ""		});
+	input_NG_List.push_back({ SEARCH_COLUMN, "3 231" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "32 31" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "323 1" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "3 23 1" });//띄어쓰기 2개
+	input_NG_List.push_back({ SEARCH_COLUMN, "3 2 3 1" });//띄어쓰기 3개
+	input_NG_List.push_back({ SEARCH_COLUMN, " 3231" });//공백문자로 시작
+	input_NG_List.push_back({ SEARCH_COLUMN, "3231 " });//공백문자로 종료
+	input_NG_List.push_back({ SEARCH_COLUMN, "A231" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "323Z" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "3M31" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "!231" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "323?" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "3_31" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "32/1" });//특수문자 포함
+
+	for (vector < string> input_NG : input_NG_List) {
+		EXPECT_THROW(cmdSCH.run(INPUT_OPTION, input_NG), invalid_argument);
+	}
+}
+TEST_F(CommandProcessorFixture, SCHTest_전화번호_Option2_LastNum) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::RecordPrint, enumOptionList::FindByLastNum_PhoneNum, enumOptionList::None };
+	const string SEARCH_COLUMN = "phoneNum";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "14130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "15130827", "RPO JKL",		"CL4", "010-3231-1698", "20090202", "PRO" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "16130827", "RPO JKLM",		"CL4", "010-3231-1698", "20090203", "EX" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "17130827", "RPO JKLMN",	"CL4", "010-3231-1698", "20090204", "ADV" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "18130827", "RPO JKLMNO",	"CL4", "010-3231-1698", "20090205", "PRO" }); //테스트를 위해 전화번호(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "71130827", "RPOP JK",		"CL3", "010-3231-1234", "20090206", "EX" }); //테스트를 위해 전화번호(middle)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "72130827", "RPOPQ JK",		"CL3", "010-3231-1234", "20090207", "ADV" }); //테스트를 위해 전화번호(middle)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "73130827", "RPOPQR JK",	"CL2", "010-1234-1698", "20090207", "EX" });  //테스트를 위해 전화번호(last)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "74130827", "RPOPQRS JK",	"CL2", "010-1234-1698", "20090207", "ADV" }); //테스트를 위해 전화번호(last)가 같은 employ 추가함.
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times((int)input_ADD_List->size()).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK1_결과 5개미만
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+
+	const string SEARCH_STR_OK1 = "1234";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK1)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK1 });
+	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_OK2_결과 5개초과
+	list_result.clear();
+	const string SEARCH_STR_OK2 = "1698";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK2)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK2 });
+	CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_NG
+	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, "" });
+	input_NG_List.push_back({ SEARCH_COLUMN, "3 231" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "32 31" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "323 1" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "3 23 1" });//띄어쓰기 2개
+	input_NG_List.push_back({ SEARCH_COLUMN, "3 2 3 1" });//띄어쓰기 3개
+	input_NG_List.push_back({ SEARCH_COLUMN, " 3231" });//공백문자로 시작
+	input_NG_List.push_back({ SEARCH_COLUMN, "3231 " });//공백문자로 종료
+	input_NG_List.push_back({ SEARCH_COLUMN, "A231" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "323Z" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "3M31" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "!231" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "323?" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "3_31" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "32/1" });//특수문자 포함
+
+	for (vector < string> input_NG : input_NG_List) {
+		EXPECT_THROW(cmdSCH.run(INPUT_OPTION, input_NG), invalid_argument);
+	}
+}
 //생년월일 테스트
+TEST_F(CommandProcessorFixture, SCHTest_생년월일_noOption) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::None, enumOptionList::None, enumOptionList::None };
+	const string SEARCH_COLUMN = "birthday";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "91130827", "RPO JK",		"CL4", "010-3231-1698", "20091211", "ADV" });
+	input_ADD_List->push_back({ "92130827", "RPO JK",		"CL4", "010-3231-1698", "20090101", "ADV" });
+	input_ADD_List->push_back({ "93130827", "RPO JK",		"CL4", "010-3231-1698", "20091201", "ADV" });
+	input_ADD_List->push_back({ "94130827", "RPO JK",		"CL4", "010-3231-1698", "20090131", "ADV" });
+	input_ADD_List->push_back({ "95130827", "RPO JK",		"CL4", "010-3231-1698", "20090229", "ADV" });
+	input_ADD_List->push_back({ "96130827", "RPO JK",		"CL4", "010-3231-1698", "20090331", "ADV" });
+	input_ADD_List->push_back({ "97130827", "RPO JK",		"CL4", "010-3231-1698", "20090430", "ADV" });
+	input_ADD_List->push_back({ "98130827", "RPO JK",		"CL4", "010-3231-1698", "20090531", "ADV" });
+	input_ADD_List->push_back({ "99130827", "RPO JK",		"CL4", "010-3231-1698", "20090630", "ADV" });
+	input_ADD_List->push_back({ "00130827", "RPO JK",		"CL4", "010-3231-1698", "20090731", "ADV" });
+	input_ADD_List->push_back({ "01130827", "RPO JK",		"CL4", "010-3231-1698", "20090831", "ADV" });
+	input_ADD_List->push_back({ "02130827", "RPO JK",		"CL4", "010-3231-1698", "20090930", "ADV" });
+	input_ADD_List->push_back({ "03130827", "RPO JK",		"CL4", "010-3231-1698", "20091031", "ADV" });
+	input_ADD_List->push_back({ "04130827", "RPO JK",		"CL4", "010-3231-1698", "20091130", "ADV" });
+	input_ADD_List->push_back({ "05130827", "RPO JK",		"CL4", "010-3231-1698", "20091231", "ADV" });
+
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+	Times((int)input_ADD_List->size()).
+	WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run(INPUT_OPTION, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK1
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+	vector<string> searchStrOKList;
+	CommandResult CR_exp;
+	searchStrOKList.push_back("20090201");
+	searchStrOKList.push_back("20091211");
+	searchStrOKList.push_back("20090101");
+	searchStrOKList.push_back("20091201");
+	searchStrOKList.push_back("20090131");
+	searchStrOKList.push_back("20090229");
+	searchStrOKList.push_back("20090331");
+	searchStrOKList.push_back("20090430");
+	searchStrOKList.push_back("20090531");
+	searchStrOKList.push_back("20090630");
+	searchStrOKList.push_back("20090731");
+	searchStrOKList.push_back("20090831");
+	searchStrOKList.push_back("20090930");
+	searchStrOKList.push_back("20091031");
+	searchStrOKList.push_back("20091130");
+	searchStrOKList.push_back("20091231");
+	for (string searchStrOK : searchStrOKList) {
+		list_result.clear();
+		for (vector<string> aEmpVec : *input_ADD_List) {
+			if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == searchStrOK)
+				list_result.push_back(Employ(aEmpVec));
+		}
+		EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+			Times(1).
+			WillOnce(Return(list_result));
+		CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, searchStrOK });
+		CR_exp = CommandResult((int)list_result.size(), list_result);
+		EXPECT_EQ(CR, CR_exp);
+	}
+
+	//SCHTest_NG
+	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, "090201" });//형식 이상 (yymmdd)
+	input_NG_List.push_back({ SEARCH_COLUMN, "00090231" });//형식 이상 (00yymmdd)
+	input_NG_List.push_back({ SEARCH_COLUMN, "20090431" });//없는 날짜
+	input_NG_List.push_back({ SEARCH_COLUMN, "20090631" });//없는 날짜
+	input_NG_List.push_back({ SEARCH_COLUMN, "20090931" });//없는 날짜
+	input_NG_List.push_back({ SEARCH_COLUMN, "20091131" });//없는 날짜
+	input_NG_List.push_back({ SEARCH_COLUMN, "2009aa11" });//없는 날짜
+	input_NG_List.push_back({ SEARCH_COLUMN, "200912BB" });//NG
+	input_NG_List.push_back({ SEARCH_COLUMN, "20??0201" });//NG"19??1211",	
+	input_NG_List.push_back({ SEARCH_COLUMN, "2009-02-01" });//NG"1977-12-11"
+	input_NG_List.push_back({ SEARCH_COLUMN, "2009/02/01" });//NG"1977/12/11"
+	input_NG_List.push_back({ SEARCH_COLUMN, "01022009" });//NG (DDMMYYYY)
+
+	for (vector < string> input_NG : input_NG_List) {
+		EXPECT_THROW(cmdSCH.run(INPUT_OPTION, input_NG), invalid_argument);
+	}
+}
+TEST_F(CommandProcessorFixture, SCHTest_생년월일_Option1) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::RecordPrint, enumOptionList::None, enumOptionList::None };
+	const string SEARCH_COLUMN = "birthday";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "91130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });//테스트를 위해 생년월일(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "92130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "93130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "94130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "95130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "96130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });//테스트를 위해 생년월일(yyyy)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "97130827", "RPO JK",		"CL4", "010-3231-1698", "20090403", "ADV" });
+	input_ADD_List->push_back({ "98130827", "RPO JK",		"CL4", "010-3231-1698", "20090504", "ADV" });
+	input_ADD_List->push_back({ "99130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });//테스트를 위해 생년월일(mm)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "00130827", "RPO JK",		"CL4", "010-3231-1698", "20110203", "ADV" });
+	input_ADD_List->push_back({ "01130827", "RPO JK",		"CL4", "010-3231-1698", "20120204", "ADV" });
+	input_ADD_List->push_back({ "02130827", "RPO JK",		"CL4", "010-3231-1698", "20130301", "ADV" });//테스트를 위해 생년월일(dd)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "03130827", "RPO JK",		"CL4", "010-3231-1698", "20140401", "ADV" });
+	input_ADD_List->push_back({ "04130827", "RPO JK",		"CL4", "010-3231-1698", "20150501", "ADV" });
+	
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times((int)input_ADD_List->size()).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run(INPUT_OPTION, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+	const string SEARCH_STR_OK = "20090201";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK });
+	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+}
+TEST_F(CommandProcessorFixture, SCHTest_생년월일_Option2_Year) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::RecordPrint, enumOptionList::FindByYear_Birthday, enumOptionList::None };
+	const string SEARCH_COLUMN = "birthday";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "91130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });//테스트를 위해 생년월일(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "92130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "93130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "94130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "95130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "76130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });//테스트를 위해 생년월일(yyyy)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "77130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });
+	input_ADD_List->push_back({ "78130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });
+	input_ADD_List->push_back({ "79130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });//테스트를 위해 생년월일(mm)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "80130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });
+	input_ADD_List->push_back({ "81130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });
+	input_ADD_List->push_back({ "82130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });//테스트를 위해 생년월일(dd)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "83130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });
+	input_ADD_List->push_back({ "84130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times((int)input_ADD_List->size()).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK1_결과 5개미만
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+
+	const string SEARCH_STR_OK1 = "1978";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK1)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK1 });
+	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_OK2_결과 5개초과
+	list_result.clear();
+	const string SEARCH_STR_OK2 = "2009";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK2)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK2 });
+	CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_NG
+	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, "" });//null
+	input_NG_List.push_back({ SEARCH_COLUMN, "2 009" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "20 09" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "200 9" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "2 00 9" });//띄어쓰기 2개
+	input_NG_List.push_back({ SEARCH_COLUMN, "2 0 0 9" });//띄어쓰기 3개
+	input_NG_List.push_back({ SEARCH_COLUMN, " 2009" });//공백문자로 시작
+	input_NG_List.push_back({ SEARCH_COLUMN, "2009 " });//공백문자로 종료
+	input_NG_List.push_back({ SEARCH_COLUMN, "A009" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "200Z" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "20O9" });//문자 포함 (영어 O)
+	input_NG_List.push_back({ SEARCH_COLUMN, "!009" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "200?" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "2_09" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "20/9" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "20119" });//5글자
+	input_NG_List.push_back({ SEARCH_COLUMN, "009" });//3글자
+	input_NG_List.push_back({ SEARCH_COLUMN, "09" });//2글자
+	
+	for (vector < string> input_NG : input_NG_List) {
+		EXPECT_THROW(cmdSCH.run(INPUT_OPTION, input_NG), invalid_argument);
+	}
+}
+TEST_F(CommandProcessorFixture, SCHTest_생년월일_Option2_Month) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::RecordPrint, enumOptionList::FindByMonth_Birthday, enumOptionList::None };
+	const string SEARCH_COLUMN = "birthday";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "91130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });//테스트를 위해 생년월일(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "92130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "93130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "94130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "95130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "76130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });//테스트를 위해 생년월일(yyyy)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "77130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });
+	input_ADD_List->push_back({ "78130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });
+	input_ADD_List->push_back({ "79130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });//테스트를 위해 생년월일(mm)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "80130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });
+	input_ADD_List->push_back({ "81130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });
+	input_ADD_List->push_back({ "82130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });//테스트를 위해 생년월일(dd)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "83130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });
+	input_ADD_List->push_back({ "84130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times((int)input_ADD_List->size()).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK1_결과 5개미만
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+
+	const string SEARCH_STR_OK1 = "04";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK1)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK1 });
+	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_OK2_결과 5개초과
+	list_result.clear();
+	const string SEARCH_STR_OK2 = "02";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK2)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK2 });
+	CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_NG
+	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, "" });//null
+	input_NG_List.push_back({ SEARCH_COLUMN, "0 2" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "0  2" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, " 02" });//공백문자로 시작
+	input_NG_List.push_back({ SEARCH_COLUMN, "02 " });//공백문자로 종료
+	input_NG_List.push_back({ SEARCH_COLUMN, "A2" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "0Z" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "O2" });//문자 포함 (영어 O)
+	input_NG_List.push_back({ SEARCH_COLUMN, "!2" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "0?" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "_2" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "0/" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "002" });//3글자
+	input_NG_List.push_back({ SEARCH_COLUMN, "2" });//1글자
+
+	for (vector < string> input_NG : input_NG_List) {
+		EXPECT_THROW(cmdSCH.run(INPUT_OPTION, input_NG), invalid_argument);
+	}
+}
+TEST_F(CommandProcessorFixture, SCHTest_생년월일_Option2_Day) {
+	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::RecordPrint, enumOptionList::FindByDay_Birthday, enumOptionList::None };
+	const string SEARCH_COLUMN = "birthday";
+	//set env
+	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
+	vector<vector<string>>* input_ADD_List;
+	input_ADD_List = makeInputVector();
+	input_ADD_List->push_back({ "91130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });//테스트를 위해 생년월일(전체)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "92130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "93130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "94130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "95130827", "RPO JK",		"CL4", "010-3231-1698", "20090201", "ADV" });
+	input_ADD_List->push_back({ "76130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });//테스트를 위해 생년월일(yyyy)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "77130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });
+	input_ADD_List->push_back({ "78130827", "RPO JK",		"CL4", "010-3231-1698", "20090302", "ADV" });
+	input_ADD_List->push_back({ "79130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });//테스트를 위해 생년월일(mm)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "80130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });
+	input_ADD_List->push_back({ "81130827", "RPO JK",		"CL4", "010-3231-1698", "20100202", "ADV" });
+	input_ADD_List->push_back({ "82130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });//테스트를 위해 생년월일(dd)가 같은 employ 추가함.
+	input_ADD_List->push_back({ "83130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });
+	input_ADD_List->push_back({ "84130827", "RPO JK",		"CL4", "010-3231-1698", "20100301", "ADV" });
+	EXPECT_CALL(MockDatabase::getInstance(), insertItem(_)).
+		Times((int)input_ADD_List->size()).
+		WillRepeatedly(Return(true));
+	CommandResult CR;
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		CR = cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, aEmpVec);
+		EXPECT_EQ(CR.count, 1);
+	}
+
+	//SCHTest_OK1_결과 5개미만
+	CommandProcessorSCH<MockDatabase> cmdSCH = CommandProcessorSCH<MockDatabase>();
+	vector<Employ> list_result;
+
+	const string SEARCH_STR_OK1 = "18";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK1)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK1 });
+	CommandResult CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_OK2_결과 5개초과
+	list_result.clear();
+	const string SEARCH_STR_OK2 = "01";
+	for (vector<string> aEmpVec : *input_ADD_List) {
+		if (aEmpVec[static_cast<int>(enumEmploy::EMPLOYEENUM)] == SEARCH_STR_OK2)
+			list_result.push_back(Employ(aEmpVec));
+	}
+	EXPECT_CALL(MockDatabase::getInstance(), selectItems(_, _)).
+		Times(1).
+		WillOnce(Return(list_result));
+	CR = cmdSCH.run(INPUT_OPTION, { SEARCH_COLUMN, SEARCH_STR_OK2 });
+	CR_exp = CommandResult((int)list_result.size(), list_result);
+	EXPECT_EQ(CR, CR_exp);
+
+	//SCHTest_NG
+	vector<vector<string>> input_NG_List;
+	input_NG_List.push_back({ SEARCH_COLUMN, "" });//null
+	input_NG_List.push_back({ SEARCH_COLUMN, "0 2" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, "0  2" });//띄어쓰기
+	input_NG_List.push_back({ SEARCH_COLUMN, " 02" });//공백문자로 시작
+	input_NG_List.push_back({ SEARCH_COLUMN, "02 " });//공백문자로 종료
+	input_NG_List.push_back({ SEARCH_COLUMN, "A2" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "0Z" });//문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "O2" });//문자 포함 (영어 O)
+	input_NG_List.push_back({ SEARCH_COLUMN, "!2" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "0?" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "_2" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "0/" });//특수문자 포함
+	input_NG_List.push_back({ SEARCH_COLUMN, "002" });//3글자
+	input_NG_List.push_back({ SEARCH_COLUMN, "2" });//1글자
+
+	for (vector < string> input_NG : input_NG_List) {
+		EXPECT_THROW(cmdSCH.run(INPUT_OPTION, input_NG), invalid_argument);
+	}
+}
 TEST_F(CommandProcessorFixture, SCHTest_CERTI_noOption) {
 	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::None, enumOptionList::None, enumOptionList::None };
 	const string SEARCH_COLUMN = "certi";
