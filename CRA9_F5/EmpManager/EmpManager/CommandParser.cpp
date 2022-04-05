@@ -85,21 +85,11 @@ bool CommandParser::parsing(string InputArg, const string delimiter) {
 			throw invalid_argument("Split하려는 argument 개수가 너무 작습니다.");
 		}
 
-		if (SplitedString[0] == "ADD") {
-			Command = enumCommandList::ADD;
-		}
-		else if (SplitedString[0] == "MOD") {
-			Command = enumCommandList::MOD;
-		}
-		else if (SplitedString[0] == "DEL") {
-			Command = enumCommandList::DEL;
-		}
-		else if (SplitedString[0] == "SCH") {
-			Command = enumCommandList::SCH;
-		}
-		else {
+		if (strtoEnumCmd.find(SplitedString[0]) == strtoEnumCmd.end()) {
 			throw invalid_Command("사용하지 않은 cmd가 들어왔습니다.");
 		}
+
+		Command = strtoEnumCmd[SplitedString[0]];
 
 		CommandOption.push_back(SetOption_1(SplitedString[1]));
 		CommandOption.push_back(SetOption_2(SplitedString[2], SplitedString[4]));
