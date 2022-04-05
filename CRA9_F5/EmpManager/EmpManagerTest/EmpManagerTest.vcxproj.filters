@@ -32,6 +32,9 @@
     <ClCompile Include="..\EmpManager\employManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="CommandProcessorTest_Fixture_MOD.cpp">
+      <Filter>TestCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
