@@ -76,15 +76,15 @@ public:
 	int getMonth() { return month; }
 	int getDay() { return day; }
 	string getBirthday(){
-		string yearStr;
+		string yearStr = to_string(year);;
 		if (year < 10) yearStr = "000" + to_string(year);
 		else if (year < 100) yearStr = "00" + to_string(year);
 		else if (year < 1000) yearStr = "0" + to_string(year);
 
-		string monthStr;
+		string monthStr = to_string(month);;
 		if (month < 10) monthStr = "0" + to_string(month);
 
-		string dayStr;
+		string dayStr = to_string(day);
 		if (day < 10) dayStr = "0" + to_string(day);
 
 		return "" + yearStr + monthStr + dayStr;
