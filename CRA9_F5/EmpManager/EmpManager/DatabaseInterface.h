@@ -8,6 +8,14 @@
 #include "DatabaseUpdate.h"
 using namespace std;
 
+class InvalidColumnException : public exception
+{
+	string message;
+public:
+	InvalidColumnException(string message) : message(message) {}
+	virtual const char* what() const throw() { return message.c_str(); }
+};
+
 struct DatabaseSearchItem {
 	string column;
 	string value;
@@ -39,6 +47,7 @@ private:
 		databaseSearchDbIndex[static_cast<int>(enumEmploy::BIRTHDAY)] = new DatabaseSearchByBirthday();
 		databaseSearchDbIndex[static_cast<int>(enumEmploy::CERTI)] = new DatabaseSearchByCerti();
 	}
+	bool checkValidColumn(enumOptionList option, string column);
 
 	vector<Employ> employDB;
 	DatabaseSearchDbIndex* databaseSearchDbIndex[static_cast<int>(enumEmploy::Employ_MAX)];
