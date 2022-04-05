@@ -4,14 +4,14 @@
 #include "Employ.h"
 #include "CommandParser.h"
 
-class DatabaseSearch
+class DatabaseSearchDbIndex
 {
 public:
-	DatabaseSearch() {};
+	DatabaseSearchDbIndex() {};
 	virtual vector<int> search(vector<Employ> db, enumOptionList option, string value) = 0;
 };
 
-class DatabaseSearchByEmployeeNum : public DatabaseSearch
+class DatabaseSearchByEmployeeNum : public DatabaseSearchDbIndex
 {
 public:
 	vector<int> search(vector<Employ> db, enumOptionList option, string value) override
@@ -26,7 +26,7 @@ public:
 	}
 };
 
-class DatabaseSearchByName : public DatabaseSearch
+class DatabaseSearchByName : public DatabaseSearchDbIndex
 {
 public:
 	vector<int> search(vector<Employ> db, enumOptionList option, string value) override
@@ -49,7 +49,7 @@ public:
 	}
 };
 
-class DatabaseSearchByCl : public DatabaseSearch
+class DatabaseSearchByCl : public DatabaseSearchDbIndex
 {
 public:
 	vector<int> search(vector<Employ> db, enumOptionList option, string value) override
@@ -65,7 +65,7 @@ public:
 	}
 };
 
-class DatabaseSearchByPhone : public DatabaseSearch
+class DatabaseSearchByPhone : public DatabaseSearchDbIndex
 {
 public:
 	vector<int> search(vector<Employ> db, enumOptionList option, string value) override
@@ -89,7 +89,7 @@ public:
 	}
 };
 
-class DatabaseSearchByBirthday : public DatabaseSearch
+class DatabaseSearchByBirthday : public DatabaseSearchDbIndex
 {
 public:
 	vector<int> search(vector<Employ> db, enumOptionList option, string value) override
@@ -116,7 +116,7 @@ public:
 	}
 };
 
-class DatabaseSearchByCerti : public DatabaseSearch
+class DatabaseSearchByCerti : public DatabaseSearchDbIndex
 {
 public:
 	vector<int> search(vector<Employ> db, enumOptionList option, string value) override

@@ -4,7 +4,7 @@
 #include <vector>
 #include "Employ.h"
 #include "CommandParser.h"
-#include "DatabaseSearch.h"
+#include "DatabaseSearchDbIndex.h"
 #include "DatabaseUpdate.h"
 using namespace std;
 
@@ -32,16 +32,16 @@ private:
 	DatabaseInterface() {
 		employDB.clear();
 
-		databaseSearch[static_cast<int>(enumEmploy::EMPLOYEENUM)] = new DatabaseSearchByEmployeeNum();
-		databaseSearch[static_cast<int>(enumEmploy::NAME)] = new DatabaseSearchByName();
-		databaseSearch[static_cast<int>(enumEmploy::CL)] = new DatabaseSearchByCl();
-		databaseSearch[static_cast<int>(enumEmploy::PHONENUM)] = new DatabaseSearchByPhone();
-		databaseSearch[static_cast<int>(enumEmploy::BIRTHDAY)] = new DatabaseSearchByBirthday();
-		databaseSearch[static_cast<int>(enumEmploy::CERTI)] = new DatabaseSearchByCerti();
+		databaseSearchDbIndex[static_cast<int>(enumEmploy::EMPLOYEENUM)] = new DatabaseSearchByEmployeeNum();
+		databaseSearchDbIndex[static_cast<int>(enumEmploy::NAME)] = new DatabaseSearchByName();
+		databaseSearchDbIndex[static_cast<int>(enumEmploy::CL)] = new DatabaseSearchByCl();
+		databaseSearchDbIndex[static_cast<int>(enumEmploy::PHONENUM)] = new DatabaseSearchByPhone();
+		databaseSearchDbIndex[static_cast<int>(enumEmploy::BIRTHDAY)] = new DatabaseSearchByBirthday();
+		databaseSearchDbIndex[static_cast<int>(enumEmploy::CERTI)] = new DatabaseSearchByCerti();
 	}
 
 	vector<Employ> employDB;
-	DatabaseSearch* databaseSearch[static_cast<int>(enumEmploy::Employ_MAX)];
+	DatabaseSearchDbIndex* databaseSearchDbIndex[static_cast<int>(enumEmploy::Employ_MAX)];
 	DatabaseUpdate databaseUpdate;
 
 };

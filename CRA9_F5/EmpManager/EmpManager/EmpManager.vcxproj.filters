@@ -53,10 +53,10 @@
     <ClInclude Include="employManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="DatabaseSearch.h">
+    <ClInclude Include="DatabaseUpdate.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="DatabaseUpdate.h">
+    <ClInclude Include="DatabaseSearchDbIndex.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

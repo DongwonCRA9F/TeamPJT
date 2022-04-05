@@ -4,7 +4,7 @@
 using namespace std;
 bool DatabaseInterface::insertItem(Employ employee)
 {
-	vector<int> indexList = databaseSearch[static_cast<int>(enumEmploy::EMPLOYEENUM)]->search(employDB, enumOptionList::None, to_string(employee.getEmployeeNum()));
+	vector<int> indexList = databaseSearchDbIndex[static_cast<int>(enumEmploy::EMPLOYEENUM)]->search(employDB, enumOptionList::None, to_string(employee.getEmployeeNum()));
 	if (indexList.size() != 0) return false;
 
 	employDB.emplace_back(employee);
@@ -15,7 +15,7 @@ bool DatabaseInterface::insertItem(Employ employee)
 vector<Employ> DatabaseInterface::selectItems(enumOptionList option, DatabaseSearchItem item)
 {
 	vector<Employ> result;
-	vector<int> indexList = databaseSearch[static_cast<int>(employMap.find(item.column)->second)]->search(employDB, option, item.value);
+	vector<int> indexList = databaseSearchDbIndex[static_cast<int>(employMap.find(item.column)->second)]->search(employDB, option, item.value);
 	for (auto index : indexList) {
 		result.emplace_back(employDB[index]);
 	}
@@ -26,7 +26,7 @@ vector<Employ> DatabaseInterface::selectItems(enumOptionList option, DatabaseSea
 vector<Employ> DatabaseInterface::updateItems(enumOptionList option, DatabaseSearchItem origin, DatabaseSearchItem update)
 {
 	vector<Employ> result;
-	vector<int> indexList = databaseSearch[static_cast<int>(employMap.find(origin.column)->second)]->search(employDB, option, origin.value);
+	vector<int> indexList = databaseSearchDbIndex[static_cast<int>(employMap.find(origin.column)->second)]->search(employDB, option, origin.value);
 	for (auto index : indexList) {
 		result.emplace_back(employDB[index]);
 	}
