@@ -15,11 +15,7 @@ protected:
 
 	EmployManager empManager;
 	CommandResult sampleCmdResult;
-	vector<Employ> sampleEmpList;
 	vector<string> sampleOutList;
 
-
-
-	void makeSampleEmpList();
 	void makeSampleOutList();
 };

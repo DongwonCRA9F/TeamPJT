@@ -3,16 +3,12 @@
 #include "../EmpManager/employManager.h"
 
 void EmployManagerFixture::SetUp() {
-	makeSampleEmpList();
 	makeSampleOutList();
 
 	empManager.cmdProcessor = new CommandProcessor();
 }
 
 void EmployManagerFixture::TearDown() {
-}
-
-void EmployManagerFixture::makeSampleEmpList() {
 }
 
 void EmployManagerFixture::makeSampleOutList() {
