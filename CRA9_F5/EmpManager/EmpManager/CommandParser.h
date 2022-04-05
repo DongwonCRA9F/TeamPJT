@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <memory>
+#include <map>
 
 using namespace std;
 
@@ -31,6 +33,8 @@ enum class enumOptionList {
 	FindByDay_Birthday,
 };
 
+
+
 class invalid_Command : public exception {
 private:
 	string errmsg;
@@ -53,30 +57,6 @@ public:
 	}
 };
 
-
-class CommandParser {
-private:
-	enumCommandList Command;
-	vector<enumOptionList> CommandOption;
-	vector<string> Conditions;
-
-	const size_t CommandNum = 1;
-	const size_t OptionNum = 3;
-
-	void InitData();
-	vector<string> Split(string input, string delimiter);
-	enumOptionList SetOption_1(string optionString);
-	enumOptionList SetOption_2(string optionString, string FirstColumn);
-	enumOptionList SetOption_3(string optionString);
-
-public:
-	CommandParser() : Command(enumCommandList::NONE) {
-	}
-	bool parsing(string InputArg, const string delimiter);
-	enumCommandList getCommand();
-	vector<enumOptionList> getOptions();
-	vector<string> getConditions();
-};
 
 class CommandParserChecker {
 public:
@@ -150,3 +130,41 @@ public:
 		return true;
 	};
 };
+
+
+
+class CommandParser {
+private:
+	enumCommandList Command;
+	vector<enumOptionList> CommandOption;
+	vector<string> Conditions;
+
+	map<enumCommandList, unique_ptr<CommandParserChecker>> ValidChecker;
+	map<string, enumCommandList> strtoEnumCmd;
+
+	const size_t CommandNum = 1;
+	const size_t OptionNum = 3;
+
+	void InitData();
+	vector<string> Split(string input, string delimiter);
+	enumOptionList SetOption_1(string optionString);
+	enumOptionList SetOption_2(string optionString, string FirstColumn);
+	enumOptionList SetOption_3(string optionString);
+
+public:
+	CommandParser() : Command(enumCommandList::NONE) {
+		strtoEnumCmd["ADD"] = enumCommandList::ADD;
+		strtoEnumCmd["DEL"] = enumCommandList::DEL;
+		strtoEnumCmd["SCH"] = enumCommandList::SCH;
+		strtoEnumCmd["MOD"] = enumCommandList::MOD;
+		ValidChecker[enumCommandList::ADD] = make_unique<AddCommandChecker>();
+		ValidChecker[enumCommandList::DEL] = make_unique<DelCommandChecker>();
+		ValidChecker[enumCommandList::SCH] = make_unique<SchCommandChecker>();
+		ValidChecker[enumCommandList::MOD] = make_unique<ModCommandChecker>();
+	}
+	bool parsing(string InputArg, const string delimiter);
+	enumCommandList getCommand();
+	vector<enumOptionList> getOptions();
+	vector<string> getConditions();
+};
+

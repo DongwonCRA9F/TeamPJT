@@ -32,7 +32,7 @@ private:
 
 
 	CommandProcessor* getProcessor(enumCommandList cmd);
-
+	string empNumTostr(int employNum);
 public:
 	vector<string> runCommand(string input);
 	vector<string> cmdResultTostrList(enumCommandList cmd, CommandResult cmdResult);
