@@ -17,7 +17,6 @@ TEST_F(CommandProcessorFixture, ADDTest_기본테스트) {
 	CommandResult CR = cmdADD.run(input1_1, input1_2);
 	EXPECT_EQ(CR.count, 1);
 }
-
 TEST_F(CommandProcessorFixture, ADDTest_NULL정보허용안함) {
 	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
 	vector<vector<string>> input_NG_List;
@@ -31,7 +30,6 @@ TEST_F(CommandProcessorFixture, ADDTest_NULL정보허용안함) {
 		EXPECT_THROW(cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_NG), invalid_argument);
 	}
 }
-
 TEST_F(CommandProcessorFixture, ADDTest_사원번호) {
 	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
 	vector<vector<string>> input_OK_List;
@@ -56,7 +54,6 @@ TEST_F(CommandProcessorFixture, ADDTest_사원번호) {
 		EXPECT_THROW(cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_NG), invalid_argument);
 	}
 }
-
 TEST_F(CommandProcessorFixture, ADDTest_성명) {
 	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
 	vector<vector<string>> input_OK_List;
@@ -84,7 +81,6 @@ TEST_F(CommandProcessorFixture, ADDTest_성명) {
 		EXPECT_THROW(cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_NG), invalid_argument);
 	}
 }
-
 TEST_F(CommandProcessorFixture, ADDTest_경력개발단계) {
 	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
 	vector<vector<string>> input_OK_List;
@@ -111,7 +107,6 @@ TEST_F(CommandProcessorFixture, ADDTest_경력개발단계) {
 		EXPECT_THROW(cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_NG), invalid_argument);
 	}
 }
-
 TEST_F(CommandProcessorFixture, ADDTest_전화번호) {
 	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
 	vector<vector<string>> input_OK_List;
@@ -154,7 +149,6 @@ TEST_F(CommandProcessorFixture, ADDTest_전화번호) {
 		EXPECT_THROW(cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_NG), invalid_argument);
 	}
 }
-
 TEST_F(CommandProcessorFixture, ADDTest_생년월일) {
 	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
 	vector<vector<string>> input_OK_List;
@@ -175,8 +169,8 @@ TEST_F(CommandProcessorFixture, ADDTest_생년월일) {
 	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19771031",		"ADV" });
 	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19771130",		"ADV" });
 	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19771231",		"ADV" });
-	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-311-2609",		"771211",		"ADV" });//형식 이상 (middle 3자리)
-	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-311-2609",		"00771211",		"ADV" });//형식 이상 (middle 3자리)
+	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-311-2609",		"771211",		"ADV" });//형식 이상 (yymmdd)
+	input_NG_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-311-2609",		"00771211",		"ADV" });//형식 이상 (00yymmdd)
 	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19770231",		"ADV" });//없는 날짜
 	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19770431",		"ADV" });//없는 날짜
 	input_OK_List.push_back({ "15123099",	"SUNG MYEONG",	"CL3",	"010-3112-2609",	"19770631",		"ADV" });//없는 날짜
@@ -202,7 +196,6 @@ TEST_F(CommandProcessorFixture, ADDTest_생년월일) {
 		EXPECT_THROW(cmdADD.run({ enumOptionList::None, enumOptionList::None, enumOptionList::None }, input_NG), invalid_argument);
 	}
 }
-
 TEST_F(CommandProcessorFixture, ADDTest_CERTI) {
 	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
 	vector<vector<string>> input_OK_List;
