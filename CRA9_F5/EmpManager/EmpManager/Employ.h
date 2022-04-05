@@ -75,7 +75,20 @@ public:
 	int getYear() { return year; }
 	int getMonth() { return month; }
 	int getDay() { return day; }
-	string getBirthday(){ return "" + to_string(year) + to_string(month) + to_string(day); }
+	string getBirthday(){
+		string yearStr;
+		if (year < 10) yearStr = "000" + to_string(year);
+		else if (year < 100) yearStr = "00" + to_string(year);
+		else if (year < 1000) yearStr = "0" + to_string(year);
+
+		string monthStr;
+		if (month < 10) monthStr = "0" + to_string(month);
+
+		string dayStr;
+		if (day < 10) dayStr = "0" + to_string(day);
+
+		return "" + yearStr + monthStr + dayStr;
+	}
 
 	void setYYYYMMDD(string YYYYMMDD) {
 		year = stoi(YYYYMMDD.substr(yearOffset, yearCount));
