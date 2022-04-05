@@ -2,8 +2,10 @@
 
 #include "pch.h"
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "../EmpManager/employManager.h"
-#include "../EmpManager/employManager.cpp"
+
+using namespace testing;
 
 class EmployManagerFixture : public ::testing::Test {
 
@@ -15,6 +17,8 @@ protected:
 	CommandResult sampleCmdResult;
 	vector<Employ> sampleEmpList;
 	vector<string> sampleOutList;
+
+
 
 	void makeSampleEmpList();
 	void makeSampleOutList();
