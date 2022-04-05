@@ -79,34 +79,35 @@ bool DatabaseInterface::checkValidColumn(enumOptionList option, string column)
 		return false;
 	}
 
-	if (option != enumOptionList::None) {
-		if (it->second == enumEmploy::BIRTHDAY) {
-			if (option != enumOptionList::FindByYear_Birthday
-				&& option != enumOptionList::FindByMonth_Birthday
-				&& option != enumOptionList::FindByDay_Birthday) {
-				throw InvalidColumnException("Invalid match : Search Option - Column");
-				return false;
-			}
-		}
-		else if (it->second == enumEmploy::NAME) {
-			if (option != enumOptionList::FindByFirstName_Name
-				&& option != enumOptionList::FindByLastName_Name) {
-				throw InvalidColumnException("Invalid match : Search Option - Column");
-				return false;
-			}
-		}
-		else if (it->second == enumEmploy::PHONENUM) {
-			if (option != enumOptionList::FindByMiddleNum_PhoneNum
-				&& option != enumOptionList::FindByLastNum_PhoneNum) {
-				throw InvalidColumnException("Invalid match : Search Option - Column");
-				return false;
-			}
-		}
-		else {
+	if (option == enumOptionList::None) { return true; }
+
+	if (it->second == enumEmploy::BIRTHDAY) {
+		if (option != enumOptionList::FindByYear_Birthday
+			&& option != enumOptionList::FindByMonth_Birthday
+			&& option != enumOptionList::FindByDay_Birthday) {
 			throw InvalidColumnException("Invalid match : Search Option - Column");
 			return false;
 		}
 	}
+	else if (it->second == enumEmploy::NAME) {
+		if (option != enumOptionList::FindByFirstName_Name
+			&& option != enumOptionList::FindByLastName_Name) {
+			throw InvalidColumnException("Invalid match : Search Option - Column");
+			return false;
+		}
+	}
+	else if (it->second == enumEmploy::PHONENUM) {
+		if (option != enumOptionList::FindByMiddleNum_PhoneNum
+			&& option != enumOptionList::FindByLastNum_PhoneNum) {
+			throw InvalidColumnException("Invalid match : Search Option - Column");
+			return false;
+		}
+	}
+	else {
+		throw InvalidColumnException("Invalid match : Search Option - Column");
+		return false;
+	}
+
 
 	return true;
 }
