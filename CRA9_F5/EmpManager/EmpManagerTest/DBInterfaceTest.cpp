@@ -54,6 +54,19 @@ namespace
 		EXPECT_EQ(em, emList[0]);
 	}
 
+	TEST_F(DBInterfaceTest, SelectTestNegative_Basic)
+	{
+		Employ em = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
+
+		EXPECT_TRUE(db.insertItem(em));
+
+		EXPECT_THROW(db.selectItems(enumOptionList::None, { "employee", "20551235" }), InvalidColumnException);
+		EXPECT_THROW(db.selectItems(enumOptionList::FindByDay_Birthday, { "employeeNum", "20551235" }), InvalidColumnException);
+		EXPECT_THROW(db.selectItems(enumOptionList::FindByFirstName_Name, { "birthday", "19991212" }), InvalidColumnException);
+		EXPECT_THROW(db.selectItems(enumOptionList::FindByFirstName_Name, { "employeeNum", "20551235" }), InvalidColumnException);
+		EXPECT_THROW(db.selectItems(enumOptionList::FindByLastNum_PhoneNum, { "employeeNum", "20551235" }), InvalidColumnException);
+	}
+
 	TEST_F(DBInterfaceTest, SelectTestPositive_BasicMultiByEmployeeNum)
 	{
 		Employ em1 = Employ(20551235, Name("SANGKAP LEE"), enumCL::CL3, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::PRO);
@@ -543,6 +556,36 @@ namespace
 		vector<Employ> emListSel0 = db.selectItems(enumOptionList::None, { "certi", "EX" });
 
 		EXPECT_EQ(emListSel0.size(), 0);
+	}
+
+	TEST_F(DBInterfaceTest, UpdatePositive_BasicByLastNameChangePhoneMulti)
+	{
+		Employ em0 = Employ(stoi("00551234"), Name("SANGKAP LEE1"), enumCL::CL1, PhoneNumber("010-9999-9991"), Birthday("19991212"), enumCerti::ADV);
+		Employ em1 = Employ(stoi("00551235"), Name("SANGKAP LEE1"), enumCL::CL2, PhoneNumber("010-9999-9992"), Birthday("19991213"), enumCerti::PRO);
+		Employ em2 = Employ(stoi("01551236"), Name("SANGKAP LEE2"), enumCL::CL2, PhoneNumber("010-9999-9992"), Birthday("19991213"), enumCerti::PRO);
+		Employ em3 = Employ(stoi("20551237"), Name("SANGKAP LEE2"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em4 = Employ(stoi("99551238"), Name("SANGKAP LEE3"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em5 = Employ(stoi("04551239"), Name("SANGKAP LEE4"), enumCL::CL3, PhoneNumber("010-9999-9993"), Birthday("19991214"), enumCerti::EX);
+		Employ em6 = Employ(stoi("20551240"), Name("SANGKAP LEE4"), enumCL::CL4, PhoneNumber("010-9999-9999"), Birthday("19991212"), enumCerti::ADV);
+
+		EXPECT_TRUE(db.insertItem(em0));
+		EXPECT_TRUE(db.insertItem(em1));
+		EXPECT_TRUE(db.insertItem(em2));
+		EXPECT_TRUE(db.insertItem(em3));
+		EXPECT_TRUE(db.insertItem(em4));
+		EXPECT_TRUE(db.insertItem(em5));
+		EXPECT_TRUE(db.insertItem(em6));
+
+
+		vector<Employ> emListUpdate = db.updateItems(enumOptionList::FindByLastName_Name, { "name", "LEE2" }, { "phoneNum", "010-8888-8888" });
+
+		vector<Employ> emListSel1 = db.selectItems(enumOptionList::None, { "phoneNum", "010-8888-8888" });
+
+		EXPECT_EQ(emListSel1.size(), 2);
+
+		vector<Employ> emListSel0 = db.selectItems(enumOptionList::None, { "employeeNum", "01551236" });
+
+		EXPECT_EQ(emListSel0.size(), 1);
 	}
 
 	TEST_F(DBInterfaceTest, DeletePositive_BasicByEmployeeNum)
