@@ -77,7 +77,7 @@ vector<string> EmployManager::cmdResultTostrList(enumCommandList cmd, CommandRes
 		return ret;
 	}
 
-	for (auto& employ : cmdResult.list) {
+	for (auto& employ : cmdResult.getDetailResults()) {
 		string str = cmdList[static_cast<int>(cmd)];
 		str += ("," + empNumTostr(employ.getEmployeeNum()));
 		str += ("," + employ.getName().getFullName());
