@@ -46,7 +46,7 @@ TEST_F(CommandProcessorFixture, MODTest_사원번호) {
 	//MODTest_OK
 	CommandProcessorMOD<MockDatabase> cmdMOD = CommandProcessorMOD<MockDatabase>();
 	vector<Employ> list_result;
-	const string SEARCH_COLUMN = "employNum";
+	const string SEARCH_COLUMN = "employeeNum";
 	const string searchStr_OK = "03113260";
 	const string UPDATE_COLUMN = "cl";
 	const string updateStr_OK = "CL3";
