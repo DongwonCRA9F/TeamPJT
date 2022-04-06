@@ -9,16 +9,7 @@ CommandProcessor* EmployManager::getProcessor(enumCommandList cmd) {
 }
 #else
 CommandProcessor* EmployManager::getProcessor(enumCommandList cmd) {
-	switch (cmd) {
-	case enumCommandList::ADD:
-		return  new CommandProcessorADD<DatabaseInterface>();
-	case enumCommandList::DEL:
-		return  new CommandProcessorDEL<DatabaseInterface>();
-	case enumCommandList::MOD:
-		return  new CommandProcessorMOD<DatabaseInterface>();
-	case enumCommandList::SCH:
-		return new CommandProcessorSCH<DatabaseInterface>();
-	}
+	return cmdProcessorArr.find(cmd)->second;
 }
 #endif
 
