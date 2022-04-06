@@ -259,7 +259,7 @@ public:
 class CommandProcessor {
 public:
 	CommandProcessor() {
-		inputCheckerStrArr["employNum"] = inputCheckerArr[enumEmploy::EMPLOYEENUM]	= new InputCheckEmployNum();
+		inputCheckerStrArr["employeeNum"] = inputCheckerArr[enumEmploy::EMPLOYEENUM]	= new InputCheckEmployNum();
 		inputCheckerStrArr["name"]		= inputCheckerArr[enumEmploy::NAME]			= new InputCheckName();
 		inputCheckerStrArr["cl"]		= inputCheckerArr[enumEmploy::CL]			= new InputCheckCl();
 		inputCheckerStrArr["phoneNum"]	= inputCheckerArr[enumEmploy::PHONENUM]		= new InputCheckPhoneNum();
