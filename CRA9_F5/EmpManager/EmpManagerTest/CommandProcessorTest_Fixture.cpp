@@ -33,12 +33,12 @@ TEST_F(CommandProcessorFixture, MODTest1) {
 	CommandProcessorMOD<MockDatabase> cmdMOD = CommandProcessorMOD<MockDatabase>();
 	vector<Employ> list_org, list_mod;
 	list_org.push_back(Employ(	{ "15123099","VXIHXOTH JHOP",		"CL3","010-3112-2609","19771211","ADV" }));
-	Employ em1_mod = Employ(	{ "15123099","VXIHXOTH JHOPMOD",	"CL3","010-3112-2609","19771211","ADV" });
+	Employ em1_mod = Employ(	{ "15123099","VXIHXO JHOPMOD",	"CL3","010-3112-2609","19771211","ADV" });
 	list_mod.push_back(em1_mod);
 	EXPECT_CALL(MockDatabase::getInstance(), updateItems(_, _, _)).
 		Times(1).
 		WillOnce(Return(list_mod));
-	CR = cmdMOD.run(input_option,  { "name", "VXIHXOTH JHOP", "name", "VXIHXOTH JHOP MODIFIED"});
+	CR = cmdMOD.run(input_option,  { "name", "VXIHXOTH JHOP", "name", "VXIHXO JHOPMOD"});
 	CommandResult CR_exp = CommandResult(1, list_mod);
 	EXPECT_EQ(CR, CR_exp);
 }

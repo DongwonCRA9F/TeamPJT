@@ -30,7 +30,7 @@ vector<vector<string>>* makeInputVector() {
 
 TEST_F(CommandProcessorFixture, SCHTest_사원번호) {
 	const vector<enumOptionList> INPUT_OPTION = { enumOptionList::None, enumOptionList::None, enumOptionList::None };
-	const string SEARCH_COLUMN = "employNum";
+	const string SEARCH_COLUMN = "employeeNum";
 	//set env
 	CommandProcessorADD<MockDatabase> cmdADD = CommandProcessorADD<MockDatabase>();
 	vector<vector<string>>* input_ADD_List;
